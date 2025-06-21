@@ -6,7 +6,7 @@
 This project presents a complete 3D production pipeline featuring **props modeling** and **environment layout**, followed by animation and final rendering.
 
 **Tools Used:**
-- Autodesk Maya
+- Maya
 - ZBrush
 - Substance Painter
 - Unity
