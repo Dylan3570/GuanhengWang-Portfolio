@@ -1,6 +1,6 @@
 # Interactive 3D Object Visualizer (p5.js)
 
-[Live Demo](https://editor.p5js.org/Guanheng_Wang/sketches/XXXXX)  
+[Live Demo](https://editor.p5js.org/Guanheng_Wang/sketches/iZZqT-eyh)  
 *(Replace with your actual link if published)*
 
 This project is an interactive 3D scene built with p5.js using the WEBGL renderer.  
