@@ -1,6 +1,7 @@
 # 3D Props and Environment Design Showcase
 
-🔗 [View Project on Google Drive](https://drive.google.com/file/d/1TgmGS--UZhJ9RrQY3GFucbiIo_51-iKa/view?usp=sharing)
+🔗 [View Project on Google Drive](https://drive.google.com/file/d/1TgmGS--UZhJ9RrQY3GFucbiIo_51-iKa/view?usp=sharing)  
+*Please download for best quality.*
 
 This project presents a complete 3D production pipeline featuring **props modeling** and **environment layout**, followed by animation and final rendering.
 
