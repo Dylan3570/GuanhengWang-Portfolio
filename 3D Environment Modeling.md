@@ -1,4 +1,4 @@
-# 3D Props and Environment Design Showcase
+# 3D Environment Modeling
 
 🔗 [Watch on YouTube](https://youtu.be/7K7D6bbKqN8)
 
