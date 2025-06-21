@@ -1,4 +1,4 @@
-# 3D Modeling & 2D Design Showcase
+# 3D Modeling & 2D Design
 
 🔗 [View PDF on Google Drive](https://drive.google.com/file/d/11TDcWB32qEqLIm4w1qEwscglmOQBhnIQ/view?usp=sharing)
 
