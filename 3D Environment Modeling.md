@@ -8,7 +8,7 @@ This project presents a complete 3D production pipeline featuring **props modeli
 - Maya  
 - ZBrush  
 - Substance Painter  
-- Unity
+- Unreal Engine
 
 **Project Highlights:**
 - Accurate modeling of environment props and architectural structures  
