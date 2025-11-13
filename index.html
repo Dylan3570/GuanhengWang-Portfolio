@@ -11,12 +11,26 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary: #0a0a0a;
+            --secondary: #1a1a1a;
+            --accent: #fff;
+            --text: #e0e0e0;
+            --text-dim: #888;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            line-height: 1.8;
-            color: #2d2d2d;
-            background: linear-gradient(135deg, #f0f9e8 0%, #fff8e1 50%, #fef3e2 100%);
-            background-attachment: fixed;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'SF Pro Display', sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--primary);
+            overflow-x: hidden;
+        }
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
         }
 
         /* Navigation */
@@ -24,172 +38,295 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px);
-            box-shadow: 0 2px 20px rgba(139, 195, 74, 0.1);
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid var(--border);
             z-index: 1000;
             padding: 20px 0;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .nav-container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 40px;
+            padding: 0 60px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo {
-            font-size: 1.2em;
-            font-weight: 700;
-            background: linear-gradient(135deg, #8bc34a, #ffa726);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -0.5px;
+            font-size: 1.3em;
+            font-weight: 600;
+            color: var(--accent);
+            letter-spacing: -1px;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .logo:hover {
+            opacity: 0.7;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
         }
 
         .nav-links a {
-            color: #666;
+            color: var(--text-dim);
             text-decoration: none;
-            margin-left: 40px;
             font-size: 0.95em;
-            transition: color 0.3s;
             font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.3s;
         }
 
         .nav-links a:hover {
-            color: #8bc34a;
+            color: var(--accent);
         }
 
-        /* Header */
-        .header {
-            margin-top: 80px;
-            padding: 120px 40px 80px;
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
+        .nav-links a:hover::after {
+            width: 100%;
         }
 
-        .header h1 {
-            font-size: 4em;
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            width: 100%;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 7rem);
             font-weight: 700;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #7cb342 0%, #ffa726 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -2px;
+            margin-bottom: 30px;
+            color: var(--accent);
+            letter-spacing: -3px;
             line-height: 1.1;
         }
 
-        .header .subtitle {
-            font-size: 1.5em;
-            color: #666;
-            margin-bottom: 40px;
+        .hero .subtitle {
+            font-size: clamp(1.2rem, 2vw, 1.8rem);
+            color: var(--text-dim);
+            margin-bottom: 50px;
             font-weight: 400;
+            animation: fadeInUp 1s ease-out 0.2s backwards;
         }
 
-        .contact-links {
+        .cta-buttons {
             display: flex;
-            gap: 30px;
+            gap: 20px;
+            animation: fadeInUp 1s ease-out 0.4s backwards;
         }
 
-        .contact-links a {
-            color: #2d2d2d;
+        .btn-primary {
+            padding: 18px 40px;
+            background: var(--accent);
+            color: var(--primary);
             text-decoration: none;
-            font-size: 1em;
-            font-weight: 500;
-            padding: 12px 24px;
-            border: 2px solid #8bc34a;
-            border-radius: 8px;
-            transition: all 0.3s;
-            background: rgba(139, 195, 74, 0.1);
+            font-weight: 600;
+            font-size: 1rem;
+            border-radius: 50px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-block;
+            border: 2px solid var(--accent);
         }
 
-        .contact-links a:hover {
-            border-color: #8bc34a;
-            background: #8bc34a;
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(139, 195, 74, 0.3);
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary {
+            padding: 18px 40px;
+            background: transparent;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            border-radius: 50px;
+            transition: all 0.3s;
+            display: inline-block;
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+
+        .scroll-indicator::before {
+            content: '';
+            display: block;
+            width: 2px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--accent), transparent);
         }
 
         /* Container */
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 60px 40px;
+            padding: 120px 60px;
         }
 
+        /* Section */
         .section {
-            margin-bottom: 120px;
+            margin-bottom: 200px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-header {
+            margin-bottom: 80px;
+        }
+
+        .section-tag {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            font-weight: 600;
         }
 
         .section-title {
-            font-size: 2.5em;
+            font-size: clamp(2.5rem, 5vw, 4rem);
             font-weight: 700;
-            margin-bottom: 60px;
-            background: linear-gradient(135deg, #7cb342, #ffa726);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -1px;
+            color: var(--accent);
+            letter-spacing: -2px;
+            line-height: 1.2;
         }
 
         /* About Section */
         .about-content {
-            font-size: 1.2em;
+            font-size: 1.4rem;
             line-height: 1.8;
-            color: #444;
-            max-width: 800px;
+            color: var(--text);
+            max-width: 900px;
+            font-weight: 300;
         }
 
-        /* Project Cards */
+        /* Project Grid */
+        .project-grid {
+            display: grid;
+            gap: 80px;
+        }
+
         .project-card {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 60px;
-            margin-bottom: 60px;
-            transition: all 0.4s;
-            border: 1px solid rgba(139, 195, 74, 0.2);
-            box-shadow: 0 10px 40px rgba(139, 195, 74, 0.1);
+            background: var(--secondary);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
         }
 
         .project-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 60px rgba(139, 195, 74, 0.2);
-            border-color: rgba(139, 195, 74, 0.4);
+            transform: translateY(-10px);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .project-content {
+            padding: 60px;
         }
 
         .project-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
             margin-bottom: 30px;
         }
 
-        .project-card h3 {
-            font-size: 2em;
+        .project-title {
+            font-size: 2.5rem;
             font-weight: 700;
-            color: #2d2d2d;
-            margin-bottom: 10px;
-            letter-spacing: -0.5px;
+            color: var(--accent);
+            margin-bottom: 15px;
+            letter-spacing: -1px;
         }
 
         .project-meta {
-            font-size: 0.95em;
-            color: #888;
-            margin-bottom: 30px;
+            font-size: 0.95rem;
+            color: var(--text-dim);
+            font-weight: 500;
         }
 
         .project-description {
-            font-size: 1.1em;
+            font-size: 1.15rem;
             line-height: 1.8;
-            color: #444;
+            color: var(--text);
             margin-bottom: 30px;
+            font-weight: 300;
         }
 
         /* Tech Stack */
@@ -201,34 +338,35 @@
         }
 
         .tech-tag {
-            background: linear-gradient(135deg, rgba(139, 195, 74, 0.15), rgba(255, 167, 38, 0.15));
-            color: #558b2f;
             padding: 8px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text);
             border-radius: 20px;
-            font-size: 0.9em;
-            font-weight: 600;
-            border: 1px solid rgba(139, 195, 74, 0.3);
+            font-size: 0.9rem;
+            font-weight: 500;
             transition: all 0.3s;
         }
 
         .tech-tag:hover {
-            background: linear-gradient(135deg, #8bc34a, #ffa726);
-            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(139, 195, 74, 0.3);
         }
 
         /* Video Container */
+        .video-wrapper {
+            margin: 40px 0;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #000;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+        }
+
         .video-container {
             position: relative;
             padding-bottom: 56.25%;
             height: 0;
-            overflow: hidden;
-            margin: 40px 0;
-            border-radius: 16px;
-            background: #000;
-            box-shadow: 0 15px 50px rgba(139, 195, 74, 0.2);
-            border: 2px solid rgba(139, 195, 74, 0.2);
         }
 
         .video-container iframe {
@@ -240,185 +378,252 @@
             border: none;
         }
 
-        /* Features List */
+        /* Features */
         .features-title {
-            font-size: 1.2em;
+            font-size: 1.2rem;
             font-weight: 600;
-            margin: 30px 0 20px;
-            color: #1a1a1a;
+            margin: 40px 0 25px;
+            color: var(--accent);
         }
 
         .features-list {
             list-style: none;
-            padding: 0;
+            display: grid;
+            gap: 15px;
         }
 
         .features-list li {
-            padding: 12px 0;
             padding-left: 30px;
             position: relative;
-            color: #444;
-            font-size: 1.05em;
+            color: var(--text);
+            font-size: 1.05rem;
+            font-weight: 300;
         }
 
-        .features-list li:before {
-            content: "→";
+        .features-list li::before {
+            content: '→';
             position: absolute;
             left: 0;
-            color: #8bc34a;
-            font-weight: 700;
-        }
-
-        /* Button */
-        .btn {
-            display: inline-block;
-            background: linear-gradient(135deg, #8bc34a, #7cb342);
-            color: white;
-            padding: 14px 32px;
-            border-radius: 8px;
-            text-decoration: none;
-            margin-right: 15px;
-            margin-top: 20px;
+            color: var(--accent);
             font-weight: 600;
-            font-size: 0.95em;
+        }
+
+        /* Project Buttons */
+        .project-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .project-btn {
+            padding: 14px 32px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border-radius: 50px;
+            border: 1px solid var(--border);
             transition: all 0.3s;
-            border: 2px solid transparent;
-            box-shadow: 0 5px 20px rgba(139, 195, 74, 0.3);
+            display: inline-block;
         }
 
-        .btn:hover {
-            background: linear-gradient(135deg, #7cb342, #689f38);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(139, 195, 74, 0.4);
+        .project-btn:hover {
+            background: var(--accent);
+            color: var(--primary);
+            border-color: var(--accent);
+            transform: translateY(-2px);
         }
 
-        /* Skills Section */
+        /* Skills Grid */
         .skills-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .skill-card {
+            background: var(--secondary);
+            padding: 50px 40px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .skill-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .skill-card h4 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 25px;
+            letter-spacing: -0.5px;
+        }
+
+        .skill-card ul {
+            list-style: none;
+        }
+
+        .skill-card li {
+            padding: 10px 0;
+            color: var(--text);
+            font-size: 1.05rem;
+            font-weight: 300;
+            transition: all 0.3s;
+        }
+
+        .skill-card li:hover {
+            color: var(--accent);
+            transform: translateX(5px);
+        }
+
+        /* Experience Timeline */
+        .timeline-item {
+            position: relative;
+            padding-left: 50px;
+            margin-bottom: 60px;
+            border-left: 2px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 0;
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        .timeline-item:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .timeline-item h3 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .timeline-item .meta {
+            font-size: 0.95rem;
+            color: var(--text-dim);
+            margin-bottom: 20px;
+        }
+
+        .timeline-item ul {
+            list-style: none;
+        }
+
+        .timeline-item li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            color: var(--text);
+            font-weight: 300;
+        }
+
+        .timeline-item li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--text-dim);
+        }
+
+        /* Education */
+        .education-grid {
+            display: grid;
             gap: 40px;
         }
 
-        .skill-category {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
+        .education-card {
+            background: var(--secondary);
             padding: 40px;
-            border-radius: 16px;
-            border: 1px solid rgba(139, 195, 74, 0.2);
+            border-radius: 20px;
+            border: 1px solid var(--border);
             transition: all 0.3s;
         }
 
-        .skill-category:hover {
-            border-color: rgba(139, 195, 74, 0.4);
-            box-shadow: 0 10px 30px rgba(139, 195, 74, 0.15);
-            transform: translateY(-5px);
+        .education-card:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.02);
         }
 
-        .skill-category h4 {
-            font-size: 1.3em;
+        .education-card h3 {
+            font-size: 1.6rem;
             font-weight: 700;
-            margin-bottom: 20px;
-            color: #558b2f;
-        }
-
-        .skill-category ul {
-            list-style: none;
-        }
-
-        .skill-category li {
-            padding: 10px 0;
-            color: #444;
-            font-size: 1.05em;
-        }
-
-        /* Experience Section */
-        .experience-item {
-            border-left: 3px solid #8bc34a;
-            padding-left: 40px;
-            margin-bottom: 50px;
-        }
-
-        .experience-item h3 {
-            font-size: 1.5em;
-            font-weight: 700;
-            color: #2d2d2d;
+            color: var(--accent);
             margin-bottom: 10px;
         }
 
-        .experience-item ul {
-            list-style: none;
-            margin-top: 20px;
-        }
-
-        .experience-item ul li {
-            padding: 10px 0;
-            color: #444;
-            font-size: 1.05em;
-            padding-left: 25px;
-            position: relative;
-        }
-
-        .experience-item ul li:before {
-            content: "•";
-            position: absolute;
-            left: 0;
-            color: #8bc34a;
-            font-weight: 700;
-        }
-
-        /* Education Section */
-        .education-item {
-            margin-bottom: 40px;
-        }
-
-        .education-item h3 {
-            font-size: 1.5em;
-            font-weight: 700;
-            color: #2d2d2d;
-            margin-bottom: 10px;
+        .education-card .meta {
+            color: var(--text-dim);
+            font-size: 0.95rem;
         }
 
         /* Footer */
         footer {
-            background: rgba(139, 195, 74, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 60px 40px;
+            background: var(--secondary);
+            border-top: 1px solid var(--border);
+            padding: 80px 60px;
             text-align: center;
-            margin-top: 120px;
-            border-top: 2px solid rgba(139, 195, 74, 0.2);
         }
 
         footer p {
-            color: #888;
-            font-size: 0.95em;
-            margin: 5px 0;
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            margin: 10px 0;
+            font-weight: 300;
         }
 
         /* Responsive */
+        @media (max-width: 1024px) {
+            .nav-container,
+            .container,
+            footer {
+                padding-left: 40px;
+                padding-right: 40px;
+            }
+
+            .hero {
+                padding: 0 40px;
+            }
+
+            .project-content {
+                padding: 40px;
+            }
+        }
+
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2.5em;
+            .nav-links {
+                gap: 20px;
             }
 
-            .header .subtitle {
-                font-size: 1.2em;
-            }
-
-            .nav-links a {
-                margin-left: 20px;
-            }
-
-            .project-card {
-                padding: 40px 30px;
-            }
-
-            .section-title {
-                font-size: 2em;
-            }
-
-            .contact-links {
+            .cta-buttons {
                 flex-direction: column;
-                gap: 15px;
+            }
+
+            .project-links {
+                flex-direction: column;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Scroll Animations */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
             }
         }
     </style>
@@ -427,115 +632,138 @@
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <div class="logo">GW</div>
+            <div class="logo">Guanheng Wang</div>
             <div class="nav-links">
                 <a href="#about">About</a>
-                <a href="#projects">Projects</a>
+                <a href="#projects">Work</a>
                 <a href="#skills">Skills</a>
                 <a href="#contact">Contact</a>
             </div>
         </div>
     </nav>
 
-    <!-- Header -->
-    <div class="header">
-        <h1>Guanheng Wang</h1>
-        <p class="subtitle">Interactive Media Specialist · 3D Artist · iOS Developer</p>
-        <div class="contact-links">
-            <a href="mailto:wgh357004@gmail.com">Email</a>
-            <a href="https://linkedin.com/in/guanheng-wang-427320354" target="_blank">LinkedIn</a>
-            <a href="https://github.com/Dylan3570" target="_blank">GitHub</a>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Interactive Media<br>Specialist</h1>
+            <p class="subtitle">3D Artist · iOS Developer · Creative Technologist</p>
+            <div class="cta-buttons">
+                <a href="#projects" class="btn-primary">View My Work</a>
+                <a href="mailto:wgh357004@gmail.com" class="btn-secondary">Get In Touch</a>
+            </div>
         </div>
-    </div>
+        <div class="scroll-indicator"></div>
+    </section>
 
     <!-- Main Content -->
     <div class="container">
         
         <!-- About Section -->
         <section id="about" class="section">
-            <h2 class="section-title">About</h2>
-            <p class="about-content">Master's student in Interactive Media at University College Cork, combining technical expertise in 3D modeling, animation, and application development. Passionate about creating engaging digital experiences that bridge technology and creativity.</p>
+            <div class="section-header">
+                <div class="section-tag">About Me</div>
+                <h2 class="section-title">Bridging Technology<br>& Creativity</h2>
+            </div>
+            <p class="about-content">Master's student in Interactive Media at University College Cork, combining technical expertise in 3D modeling, animation, and application development. Passionate about creating engaging digital experiences that push the boundaries of design and technology.</p>
         </section>
 
         <!-- Projects Section -->
         <section id="projects" class="section">
-            <h2 class="section-title">Featured Projects</h2>
-            
-            <!-- FocusMate Project -->
-            <div class="project-card">
-                <div class="project-header">
-                    <div>
-                        <h3>FocusMate</h3>
-                        <p class="project-meta">iOS Productivity Application · 2025</p>
-                    </div>
-                </div>
-                
-                <p class="project-description">A comprehensive productivity application designed for students to manage tasks, maintain focus during study sessions, and reduce procrastination through evidence-based productivity strategies.</p>
-                
-                <div class="tech-stack">
-                    <span class="tech-tag">Swift</span>
-                    <span class="tech-tag">SwiftUI</span>
-                    <span class="tech-tag">iOS Development</span>
-                    <span class="tech-tag">UI/UX Design</span>
-                </div>
-
-                <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/gZGz5pA5KOI" allowfullscreen></iframe>
-                </div>
-
-                <p class="features-title">Key Features</p>
-                <ul class="features-list">
-                    <li>Task management with calendar integration and priority scheduling</li>
-                    <li>Customizable focus timer sessions</li>
-                    <li>Progress tracking with visual analytics</li>
-                    <li>Gamified achievements system</li>
-                    <li>Productivity recommendations based on user behavior</li>
-                </ul>
-
-                <a href="https://apps.apple.com/ie/app/focusmate/id6752814522" class="btn" target="_blank">Download on App Store</a>
+            <div class="section-header">
+                <div class="section-tag">Featured Work</div>
+                <h2 class="section-title">Selected Projects</h2>
             </div>
+            
+            <div class="project-grid">
+                <!-- FocusMate Project -->
+                <div class="project-card">
+                    <div class="project-content">
+                        <div class="project-header">
+                            <h3 class="project-title">FocusMate</h3>
+                            <p class="project-meta">iOS Productivity Application · 2025</p>
+                        </div>
+                        
+                        <p class="project-description">A comprehensive productivity application designed for students to manage tasks, maintain focus during study sessions, and reduce procrastination through evidence-based productivity strategies.</p>
+                        
+                        <div class="tech-stack">
+                            <span class="tech-tag">Swift</span>
+                            <span class="tech-tag">SwiftUI</span>
+                            <span class="tech-tag">iOS Development</span>
+                            <span class="tech-tag">UI/UX Design</span>
+                        </div>
+                    </div>
 
-            <!-- 3D Modeling Project -->
-            <div class="project-card">
-                <div class="project-header">
-                    <div>
-                        <h3>3D Environment Modeling</h3>
-                        <p class="project-meta">Academic & Personal Projects · 2023 - 2025</p>
+                    <div class="video-wrapper">
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/gZGz5pA5KOI" allowfullscreen></iframe>
+                        </div>
+                    </div>
+
+                    <div class="project-content">
+                        <p class="features-title">Key Features</p>
+                        <ul class="features-list">
+                            <li>Task management with calendar integration and priority scheduling</li>
+                            <li>Customizable focus timer sessions</li>
+                            <li>Progress tracking with visual analytics</li>
+                            <li>Gamified achievements system</li>
+                            <li>Productivity recommendations based on user behavior</li>
+                        </ul>
+
+                        <div class="project-links">
+                            <a href="https://apps.apple.com/ie/app/focusmate/id6752814522" class="project-btn" target="_blank">Download on App Store</a>
+                        </div>
                     </div>
                 </div>
-                
-                <p class="project-description">This project presents a complete 3D production pipeline featuring props modeling and environment layout, followed by animation and final rendering.</p>
-                
-                <div class="tech-stack">
-                    <span class="tech-tag">Maya</span>
-                    <span class="tech-tag">ZBrush</span>
-                    <span class="tech-tag">Substance Painter</span>
-                    <span class="tech-tag">Unreal Engine</span>
+
+                <!-- 3D Modeling Project -->
+                <div class="project-card">
+                    <div class="project-content">
+                        <div class="project-header">
+                            <h3 class="project-title">3D Environment Modeling</h3>
+                            <p class="project-meta">Academic & Personal Projects · 2023 - 2025</p>
+                        </div>
+                        
+                        <p class="project-description">A complete 3D production pipeline featuring props modeling and environment layout, followed by animation and final rendering. Demonstrating technical and artistic proficiency in building cohesive environments.</p>
+                        
+                        <div class="tech-stack">
+                            <span class="tech-tag">Maya</span>
+                            <span class="tech-tag">ZBrush</span>
+                            <span class="tech-tag">Substance Painter</span>
+                            <span class="tech-tag">Unreal Engine</span>
+                        </div>
+                    </div>
+
+                    <div class="video-wrapper">
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/7K7D6bbKqN8" allowfullscreen></iframe>
+                        </div>
+                    </div>
+
+                    <div class="project-content">
+                        <p class="features-title">Project Highlights</p>
+                        <ul class="features-list">
+                            <li>Accurate modeling of environment props and architectural structures</li>
+                            <li>Advanced sculpting and texture baking techniques for photorealism</li>
+                            <li>Scene integration and dynamic lighting in Unity</li>
+                            <li>Cinematic camera animation and visual storytelling</li>
+                        </ul>
+
+                        <div class="project-links">
+                            <a href="https://youtu.be/7K7D6bbKqN8" class="project-btn" target="_blank">Watch on YouTube</a>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/7K7D6bbKqN8" allowfullscreen></iframe>
-                </div>
-
-                <p class="features-title">Project Highlights</p>
-                <ul class="features-list">
-                    <li>Accurate modeling of environment props and architectural structures</li>
-                    <li>Use of sculpting and texture baking techniques for realism</li>
-                    <li>Scene integration and lighting in Unity for real-time display</li>
-                    <li>Camera animation and visual storytelling</li>
-                </ul>
-
-                <p class="project-description">This work demonstrates technical and artistic proficiency in building cohesive 3D environments for games or cinematic presentation.</p>
-
-                <a href="https://youtu.be/7K7D6bbKqN8" class="btn" target="_blank">Watch on YouTube</a>
             </div>
         </section>
 
         <!-- Skills Section -->
         <section id="skills" class="section">
-            <h2 class="section-title">Technical Skills</h2>
+            <div class="section-header">
+                <div class="section-tag">Expertise</div>
+                <h2 class="section-title">Technical Skills</h2>
+            </div>
             <div class="skills-grid">
-                <div class="skill-category">
+                <div class="skill-card">
                     <h4>3D Production</h4>
                     <ul>
                         <li>Maya</li>
@@ -545,7 +773,7 @@
                         <li>3ds Max</li>
                     </ul>
                 </div>
-                <div class="skill-category">
+                <div class="skill-card">
                     <h4>Development</h4>
                     <ul>
                         <li>Swift & SwiftUI</li>
@@ -555,7 +783,7 @@
                         <li>HTML/CSS</li>
                     </ul>
                 </div>
-                <div class="skill-category">
+                <div class="skill-card">
                     <h4>Design & Media</h4>
                     <ul>
                         <li>Adobe Photoshop</li>
@@ -564,7 +792,7 @@
                         <li>UI/UX Design</li>
                     </ul>
                 </div>
-                <div class="skill-category">
+                <div class="skill-card">
                     <h4>Game Development</h4>
                     <ul>
                         <li>Unity Integration</li>
@@ -578,10 +806,13 @@
 
         <!-- Experience Section -->
         <section class="section">
-            <h2 class="section-title">Experience</h2>
-            <div class="experience-item">
+            <div class="section-header">
+                <div class="section-tag">Experience</div>
+                <h2 class="section-title">Professional Journey</h2>
+            </div>
+            <div class="timeline-item">
                 <h3>3D Modeler Intern</h3>
-                <p class="project-meta">MinLiu Game Company · March 2023 - June 2023</p>
+                <p class="meta">MinLiu Game Company · March 2023 - June 2023</p>
                 <ul>
                     <li>Created optimized game-ready assets using Maya, ZBrush, and Substance Painter</li>
                     <li>Executed full 3D pipeline from concept to engine integration</li>
@@ -592,14 +823,19 @@
 
         <!-- Education Section -->
         <section id="contact" class="section">
-            <h2 class="section-title">Education</h2>
-            <div class="education-item">
-                <h3>Master of Science in Interactive Media</h3>
-                <p class="project-meta">University College Cork, Ireland · 2024 - 2026</p>
+            <div class="section-header">
+                <div class="section-tag">Education</div>
+                <h2 class="section-title">Academic Background</h2>
             </div>
-            <div class="education-item">
-                <h3>Bachelor of Engineering in Software Engineering</h3>
-                <p class="project-meta">Tianjin Normal University, China · 2021 - 2023</p>
+            <div class="education-grid">
+                <div class="education-card">
+                    <h3>Master of Science in Interactive Media</h3>
+                    <p class="meta">University College Cork, Ireland · 2024 - 2026</p>
+                </div>
+                <div class="education-card">
+                    <h3>Bachelor of Engineering in Software Engineering</h3>
+                    <p class="meta">Tianjin Normal University, China · 2021 - 2023</p>
+                </div>
             </div>
         </section>
 
@@ -608,8 +844,47 @@
     <!-- Footer -->
     <footer>
         <p>&copy; 2025 Guanheng Wang. All rights reserved.</p>
-        <p>Built with passion for design and technology</p>
+        <p>Designed and developed with attention to detail</p>
+        <div style="margin-top: 30px;">
+            <a href="mailto:wgh357004@gmail.com" class="btn-secondary" style="margin: 0 10px;">Email</a>
+            <a href="https://linkedin.com/in/guanheng-wang-427320354" class="btn-secondary" style="margin: 0 10px;" target="_blank">LinkedIn</a>
+            <a href="https://github.com/Dylan3570" class="btn-secondary" style="margin: 0 10px;" target="_blank">GitHub</a>
+        </div>
     </footer>
+
+    <script>
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>
