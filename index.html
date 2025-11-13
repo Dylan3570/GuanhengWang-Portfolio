@@ -14,8 +14,9 @@
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             line-height: 1.8;
-            color: #1a1a1a;
-            background: #ffffff;
+            color: #2d2d2d;
+            background: linear-gradient(135deg, #f0f9e8 0%, #fff8e1 50%, #fef3e2 100%);
+            background-attachment: fixed;
         }
 
         /* Navigation */
@@ -23,9 +24,9 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 2px 20px rgba(139, 195, 74, 0.1);
             z-index: 1000;
             padding: 20px 0;
         }
@@ -42,7 +43,10 @@
         .logo {
             font-size: 1.2em;
             font-weight: 700;
-            color: #1a1a1a;
+            background: linear-gradient(135deg, #8bc34a, #ffa726);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             letter-spacing: -0.5px;
         }
 
@@ -56,7 +60,7 @@
         }
 
         .nav-links a:hover {
-            color: #1a1a1a;
+            color: #8bc34a;
         }
 
         /* Header */
@@ -72,7 +76,10 @@
             font-size: 4em;
             font-weight: 700;
             margin-bottom: 20px;
-            color: #1a1a1a;
+            background: linear-gradient(135deg, #7cb342 0%, #ffa726 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             letter-spacing: -2px;
             line-height: 1.1;
         }
@@ -90,20 +97,23 @@
         }
 
         .contact-links a {
-            color: #1a1a1a;
+            color: #2d2d2d;
             text-decoration: none;
             font-size: 1em;
             font-weight: 500;
             padding: 12px 24px;
-            border: 2px solid #e0e0e0;
+            border: 2px solid #8bc34a;
             border-radius: 8px;
             transition: all 0.3s;
+            background: rgba(139, 195, 74, 0.1);
         }
 
         .contact-links a:hover {
-            border-color: #1a1a1a;
-            background: #1a1a1a;
+            border-color: #8bc34a;
+            background: #8bc34a;
             color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(139, 195, 74, 0.3);
         }
 
         /* Container */
@@ -121,7 +131,10 @@
             font-size: 2.5em;
             font-weight: 700;
             margin-bottom: 60px;
-            color: #1a1a1a;
+            background: linear-gradient(135deg, #7cb342, #ffa726);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             letter-spacing: -1px;
         }
 
@@ -135,15 +148,20 @@
 
         /* Project Cards */
         .project-card {
-            background: #fafafa;
-            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
             padding: 60px;
             margin-bottom: 60px;
-            transition: transform 0.3s;
+            transition: all 0.4s;
+            border: 1px solid rgba(139, 195, 74, 0.2);
+            box-shadow: 0 10px 40px rgba(139, 195, 74, 0.1);
         }
 
         .project-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(139, 195, 74, 0.2);
+            border-color: rgba(139, 195, 74, 0.4);
         }
 
         .project-header {
@@ -156,7 +174,7 @@
         .project-card h3 {
             font-size: 2em;
             font-weight: 700;
-            color: #1a1a1a;
+            color: #2d2d2d;
             margin-bottom: 10px;
             letter-spacing: -0.5px;
         }
@@ -183,13 +201,21 @@
         }
 
         .tech-tag {
-            background: #fff;
-            color: #1a1a1a;
+            background: linear-gradient(135deg, rgba(139, 195, 74, 0.15), rgba(255, 167, 38, 0.15));
+            color: #558b2f;
             padding: 8px 20px;
             border-radius: 20px;
             font-size: 0.9em;
-            font-weight: 500;
-            border: 1px solid #e0e0e0;
+            font-weight: 600;
+            border: 1px solid rgba(139, 195, 74, 0.3);
+            transition: all 0.3s;
+        }
+
+        .tech-tag:hover {
+            background: linear-gradient(135deg, #8bc34a, #ffa726);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 195, 74, 0.3);
         }
 
         /* Video Container */
@@ -199,9 +225,10 @@
             height: 0;
             overflow: hidden;
             margin: 40px 0;
-            border-radius: 12px;
+            border-radius: 16px;
             background: #000;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 15px 50px rgba(139, 195, 74, 0.2);
+            border: 2px solid rgba(139, 195, 74, 0.2);
         }
 
         .video-container iframe {
@@ -238,14 +265,14 @@
             content: "→";
             position: absolute;
             left: 0;
-            color: #1a1a1a;
+            color: #8bc34a;
             font-weight: 700;
         }
 
         /* Button */
         .btn {
             display: inline-block;
-            background: #1a1a1a;
+            background: linear-gradient(135deg, #8bc34a, #7cb342);
             color: white;
             padding: 14px 32px;
             border-radius: 8px;
@@ -255,12 +282,14 @@
             font-weight: 600;
             font-size: 0.95em;
             transition: all 0.3s;
-            border: 2px solid #1a1a1a;
+            border: 2px solid transparent;
+            box-shadow: 0 5px 20px rgba(139, 195, 74, 0.3);
         }
 
         .btn:hover {
-            background: transparent;
-            color: #1a1a1a;
+            background: linear-gradient(135deg, #7cb342, #689f38);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(139, 195, 74, 0.4);
         }
 
         /* Skills Section */
@@ -271,16 +300,25 @@
         }
 
         .skill-category {
-            background: #fafafa;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
             padding: 40px;
-            border-radius: 12px;
+            border-radius: 16px;
+            border: 1px solid rgba(139, 195, 74, 0.2);
+            transition: all 0.3s;
+        }
+
+        .skill-category:hover {
+            border-color: rgba(139, 195, 74, 0.4);
+            box-shadow: 0 10px 30px rgba(139, 195, 74, 0.15);
+            transform: translateY(-5px);
         }
 
         .skill-category h4 {
             font-size: 1.3em;
             font-weight: 700;
             margin-bottom: 20px;
-            color: #1a1a1a;
+            color: #558b2f;
         }
 
         .skill-category ul {
@@ -295,7 +333,7 @@
 
         /* Experience Section */
         .experience-item {
-            border-left: 3px solid #1a1a1a;
+            border-left: 3px solid #8bc34a;
             padding-left: 40px;
             margin-bottom: 50px;
         }
@@ -303,7 +341,7 @@
         .experience-item h3 {
             font-size: 1.5em;
             font-weight: 700;
-            color: #1a1a1a;
+            color: #2d2d2d;
             margin-bottom: 10px;
         }
 
@@ -324,7 +362,7 @@
             content: "•";
             position: absolute;
             left: 0;
-            color: #1a1a1a;
+            color: #8bc34a;
             font-weight: 700;
         }
 
@@ -336,16 +374,18 @@
         .education-item h3 {
             font-size: 1.5em;
             font-weight: 700;
-            color: #1a1a1a;
+            color: #2d2d2d;
             margin-bottom: 10px;
         }
 
         /* Footer */
         footer {
-            background: #fafafa;
+            background: rgba(139, 195, 74, 0.1);
+            backdrop-filter: blur(10px);
             padding: 60px 40px;
             text-align: center;
             margin-top: 120px;
+            border-top: 2px solid rgba(139, 195, 74, 0.2);
         }
 
         footer p {
