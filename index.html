@@ -361,17 +361,8 @@
             display: inline-block;
         }
 
-        .hero h1 .highlight::after {
-            content: '';
-            position: absolute;
-            bottom: 5px;
-            left: 0;
-            right: 0;
-            height: 12px;
-            background: linear-gradient(90deg, rgba(91, 168, 224, 0.2), rgba(59, 138, 204, 0.2));
-            z-index: -1;
-            border-radius: 4px;
-        }
+        /* Removed the underline effect */
+        /* .hero h1 .highlight::after was removed */
 
         .hero-subtitle {
             font-size: 1.45rem;
@@ -503,12 +494,11 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            transition: transform 0.3s;
+            /* Removed rotation effect on hover */
         }
 
-        .avatar-container:hover .avatar-image img {
-            transform: scale(1.05);
-        }
+        /* Removed hover rotation effect */
+        /* .avatar-container:hover .avatar-image img was removed */
 
         .avatar-image::before {
             content: 'GW';
@@ -1084,7 +1074,7 @@
                 <p class="hero-subtitle">Interactive Media Specialist</p>
                 <p class="hero-description">Master's student at University College Cork, crafting digital experiences through 3D artistry, animation, and application development.</p>
                 <div class="hero-links">
-                    <a href="/cdn-cgi/l/email-protection#a1d6c6c9929496919195e1c6ccc0c8cd8fc2cecc">📧 Email</a>
+                    <a href="mailto:your-email@example.com">📧 Email</a>
                     <a href="https://linkedin.com/in/guanheng-wang-427320354" target="_blank">💼 LinkedIn</a>
                     <a href="https://github.com/Dylan3570" target="_blank">💻 GitHub</a>
                 </div>
@@ -1228,7 +1218,7 @@
                 <p>Interactive Media Specialist based in Cork, Ireland. Creating digital experiences that bridge technology and creativity.</p>
             </div>
             <div class="footer-links">
-                <a href="/cdn-cgi/l/email-protection#94e3f3fca7a1a3a4a4a0d4f3f9f5fdf8baf7fbf9">Email</a>
+                <a href="mailto:your-email@example.com">Email</a>
                 <a href="https://linkedin.com/in/guanheng-wang-427320354" target="_blank">LinkedIn</a>
                 <a href="https://github.com/Dylan3570" target="_blank">GitHub</a>
             </div>
@@ -1241,7 +1231,7 @@
     <!-- Scroll to top button -->
     <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</button>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script>
         // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -1315,3 +1305,5 @@
             particlesContainer.appendChild(particle);
         }
     </script>
+</body>
+</html>
