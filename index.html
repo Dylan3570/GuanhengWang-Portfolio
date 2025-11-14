@@ -234,24 +234,7 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             letter-spacing: -1.5px;
-            position: relative;
             transition: all 0.3s;
-        }
-
-        .logo::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 3px;
-            background: linear-gradient(135deg, var(--sky-blue), var(--accent-blue));
-            transition: width 0.3s;
-            border-radius: 2px;
-        }
-
-        .logo:hover::after {
-            width: 100%;
         }
 
         .nav-links {
@@ -488,16 +471,6 @@
             border-radius: 50%;
             background: linear-gradient(135deg, var(--sky-blue), var(--light-blue), var(--accent-blue));
             padding: 6px;
-            animation: rotate 20s linear infinite;
-        }
-
-        @keyframes rotate {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
         }
 
         .avatar-inner {
@@ -778,7 +751,7 @@
         /* Enhanced Skills Grid */
         .skills-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 35px;
         }
 
@@ -1054,7 +1027,7 @@
             }
 
             .skills-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
