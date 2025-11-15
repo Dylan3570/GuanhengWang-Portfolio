@@ -1362,17 +1362,31 @@
         // Set initial volume (30%)
         bgMusic.volume = 0.3;
 
-        musicToggle.addEventListener('click', () => {
+        musicToggle.addEventListener('click', async () => {
             if (isPlaying) {
                 bgMusic.pause();
                 musicToggle.classList.remove('playing');
                 musicTooltip.textContent = 'Play music';
+                isPlaying = false;
             } else {
-                bgMusic.play().catch(error => {
+                try {
+                    await bgMusic.play();
+                    musicToggle.classList.add('playing');
+                    musicTooltip.textContent = 'Pause music';
+                    isPlaying = true;
+                } catch (error) {
                     console.log('Playback prevented:', error);
-                });
-                musicToggle.classList.add('playing');
-                musicTooltip.textContent = 'Pause music';
+                    alert('Please allow audio playback. Click OK and try again.');
+                }
             }
-            isPlaying = !isPlaying;
+        });
+
+        // Debug: Check if audio file is loaded
+        bgMusic.addEventListener('canplay', () => {
+            console.log('Audio file loaded successfully');
+        });
+
+        bgMusic.addEventListener('error', (e) => {
+            console.error('Audio loading error:', e);
+            console.error('Audio source:', bgMusic.src);
         });
