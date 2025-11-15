@@ -152,50 +152,6 @@
             }
         }
 
-        /* Ocean Particle Effect */
-        .particles {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .particle {
-            position: absolute;
-            background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.9), rgba(91, 168, 224, 0.4) 60%, rgba(91, 168, 224, 0.1));
-            border-radius: 50%;
-            opacity: 0;
-            animation: particleFloat 12s infinite;
-            box-shadow: 
-                inset -1px -1px 4px rgba(91, 168, 224, 0.3),
-                inset 1px 1px 4px rgba(255, 255, 255, 0.5),
-                0 2px 10px rgba(91, 168, 224, 0.2);
-        }
-
-        @keyframes particleFloat {
-            0% {
-                transform: translateY(100vh) scale(0) rotate(0deg);
-                opacity: 0;
-            }
-            5% {
-                opacity: 0.7;
-            }
-            50% {
-                transform: translateY(50vh) scale(1) rotate(180deg);
-                opacity: 0.8;
-            }
-            95% {
-                opacity: 0.5;
-            }
-            100% {
-                transform: translateY(-10vh) scale(0.7) rotate(360deg);
-                opacity: 0;
-            }
-        }
-
         /* Enhanced Navigation */
         nav {
             position: fixed;
@@ -361,9 +317,6 @@
             display: inline-block;
         }
 
-        /* Removed the underline effect */
-        /* .hero h1 .highlight::after was removed */
-
         .hero-subtitle {
             font-size: 1.45rem;
             color: var(--sky-blue);
@@ -494,11 +447,7 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            /* Removed rotation effect on hover */
         }
-
-        /* Removed hover rotation effect */
-        /* .avatar-container:hover .avatar-image img was removed */
 
         .avatar-image::before {
             content: 'GW';
@@ -1050,9 +999,6 @@
         <div class="cloud cloud-8"></div>
     </div>
 
-    <!-- Particles -->
-    <div class="particles" id="particles"></div>
-
     <!-- Navigation -->
     <nav id="navbar">
         <div class="nav-container">
@@ -1286,25 +1232,6 @@
         sections.forEach(section => {
             sectionObserver.observe(section);
         });
-
-        // Create ocean bubbles with varied sizes
-        const particlesContainer = document.getElementById('particles');
-        const particleCount = 25;
-
-        for (let i = 0; i < particleCount; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            
-            // Random bubble sizes for ocean effect
-            const size = Math.random() * 8 + 3; // 3px to 11px
-            particle.style.width = size + 'px';
-            particle.style.height = size + 'px';
-            
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.animationDelay = Math.random() * 12 + 's';
-            particle.style.animationDuration = (Math.random() * 8 + 10) + 's';
-            particlesContainer.appendChild(particle);
-        }
     </script>
 </body>
 </html>
