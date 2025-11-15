@@ -182,8 +182,8 @@
         /* Music Player Styles */
         .music-player {
             position: fixed;
-            bottom: 100px;
-            right: 40px;
+            bottom: 40px;
+            left: 40px;
             z-index: 999;
         }
 
@@ -269,7 +269,7 @@
         .music-tooltip {
             position: absolute;
             bottom: calc(100% + 15px);
-            right: 0;
+            left: 0;
             background: white;
             padding: 12px 20px;
             border-radius: 12px;
@@ -289,7 +289,7 @@
             content: '';
             position: absolute;
             top: 100%;
-            right: 20px;
+            left: 20px;
             width: 0;
             height: 0;
             border-left: 8px solid transparent;
@@ -519,6 +519,8 @@
             height: 100%;
             object-fit: cover;
             display: block;
+            position: relative;
+            z-index: 2;
         }
 
         .avatar-image::before {
@@ -530,13 +532,15 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            opacity: 0.15;
-            z-index: 0;
+            opacity: 0;
+            z-index: 1;
+            transition: opacity 0.3s;
         }
 
-        .avatar-image img {
-            position: relative;
-            z-index: 1;
+        /* Show GW only when image fails to load */
+        .avatar-image img[src=""]::before,
+        .avatar-image:not(:has(img[src]))::before {
+            opacity: 0.15;
         }
 
         /* Container */
@@ -1042,8 +1046,8 @@
             }
 
             .music-player {
-                bottom: 80px;
-                right: 20px;
+                bottom: 20px;
+                left: 20px;
             }
 
             .scroll-top {
@@ -1120,7 +1124,7 @@
     <!-- Navigation -->
     <nav id="navbar">
         <div class="nav-container">
-            <div class="logo">Asa</div>
+            <div class="logo">GW</div>
             <div class="nav-links">
                 <a href="#projects">Projects</a>
                 <a href="#skills">Skills</a>
@@ -1149,7 +1153,7 @@
                     <div class="avatar-ring">
                         <div class="avatar-inner">
                             <div class="avatar-image">
-                                <img src="images/Me.png" alt="Guanheng Wang" onerror="this.style.display='none'">
+                                <img src="images/Me.png" alt="Guanheng Wang">
                             </div>
                         </div>
                     </div>
