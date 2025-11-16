@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guanheng Wang - Portfolio</title>
     <!-- 预加载关键资源 -->
-    <link rel="preload" href="images/Me.png" as="image">
+    <link rel="preload" href="images/Me.jpg" as="image">
     <style>
         * {
             margin: 0;
@@ -241,30 +241,39 @@
             transform: scale(1.1);
         }
 
-        /* Note Icon (Play state) */
-        .note-icon {
-            position: absolute;
-            inset: 0;
-            opacity: 1;
-            transition: all 0.3s;
-        }
-
-        .music-toggle.playing .note-icon {
-            opacity: 0;
-            transform: rotate(90deg) scale(0);
-        }
-
-        /* Mute Icon (Pause state) */
+        /* Mute Icon (Default - not playing) */
         .mute-icon {
             position: absolute;
             inset: 0;
-            opacity: 0;
+            opacity: 1;
             transition: all 0.3s;
         }
 
         .music-toggle.playing .mute-icon {
+            opacity: 0;
+            transform: rotate(-90deg) scale(0);
+        }
+
+        /* Note Icon (Playing state) */
+        .note-icon {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .music-toggle.playing .note-icon {
             opacity: 1;
-            transform: rotate(0deg) scale(1);
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         /* Tooltip */
@@ -1109,18 +1118,18 @@
         <button class="music-toggle" id="musicToggle" aria-label="Toggle background music">
             <div class="music-tooltip" id="musicTooltip">Play background music</div>
             <div class="music-icon">
-                <!-- Note Icon (Paused state) -->
-                <svg class="note-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9 18V5L21 3V16" stroke="#5BA8E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <circle cx="6" cy="18" r="3" stroke="#5BA8E0" stroke-width="2"/>
-                    <circle cx="18" cy="16" r="3" stroke="#5BA8E0" stroke-width="2"/>
-                </svg>
-                <!-- Mute Icon (Playing state) -->
+                <!-- Mute Icon (Default - not playing, 带叉) -->
                 <svg class="mute-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M9 18V5L21 3V16" stroke="#5BA8E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <circle cx="6" cy="18" r="3" stroke="#5BA8E0" stroke-width="2"/>
                     <circle cx="18" cy="16" r="3" stroke="#5BA8E0" stroke-width="2"/>
                     <line x1="3" y1="3" x2="21" y2="21" stroke="#5BA8E0" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <!-- Note Icon (Playing state, 无叉旋转) -->
+                <svg class="note-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 18V5L21 3V16" stroke="#5BA8E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="6" cy="18" r="3" stroke="#5BA8E0" stroke-width="2"/>
+                    <circle cx="18" cy="16" r="3" stroke="#5BA8E0" stroke-width="2"/>
                 </svg>
             </div>
         </button>
