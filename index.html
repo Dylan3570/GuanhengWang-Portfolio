@@ -115,7 +115,7 @@
             padding: 20px 0;
             border-bottom: 1px solid rgba(91, 168, 224, 0.12);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: visible; /* 确保内容不被裁剪 */
+            overflow: visible;
         }
 
         nav.scrolled {
@@ -131,7 +131,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            overflow: visible; /* 确保logo不被裁剪 */
+            overflow: visible;
         }
 
         .logo {
@@ -144,8 +144,8 @@
             letter-spacing: -1.5px;
             transition: all 0.3s;
             display: inline-block;
-            line-height: 1.2; /* 稍微增加行高防止裁剪 */
-            padding: 0 2px; /* 只在左右加很小的padding */
+            line-height: 1.2;
+            padding: 0 2px;
         }
 
         .nav-links {
@@ -207,10 +207,9 @@
             justify-content: center;
             box-shadow: 0 8px 25px rgba(91, 168, 224, 0.2);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: visible; /* 允许tooltip显示 */
+            overflow: visible;
         }
 
-        /* 为渐变背景添加单独的遮罩 */
         .music-toggle::before {
             content: '';
             position: absolute;
@@ -220,7 +219,7 @@
             z-index: -1;
             opacity: 0;
             transition: opacity 0.3s;
-            clip-path: circle(50% at 50% 50%); /* 确保渐变不溢出 */
+            clip-path: circle(50% at 50% 50%);
         }
 
         .music-toggle:hover {
@@ -242,7 +241,7 @@
             height: 24px;
             position: relative;
             transition: all 0.3s;
-            z-index: 1; /* 确保图标在白色背景之上 */
+            z-index: 1;
         }
 
         .music-toggle:hover .music-icon {
@@ -255,7 +254,7 @@
             inset: 0;
             opacity: 1;
             transition: all 0.3s;
-            z-index: 2; /* 确保图标显示 */
+            z-index: 2;
         }
 
         .music-toggle.playing .mute-icon {
@@ -269,7 +268,7 @@
             inset: 0;
             opacity: 0;
             transition: all 0.3s;
-            z-index: 2; /* 确保图标显示 */
+            z-index: 2;
         }
 
         .music-toggle.playing .note-icon {
@@ -286,11 +285,11 @@
             }
         }
 
-        /* Tooltip */
+        /* Tooltip - 右侧显示 */
         .music-tooltip {
             position: absolute;
-            bottom: calc(100% + 15px);
-            left: 0;
+            left: calc(100% + 15px);
+            top: 50%;
             background: white;
             padding: 12px 20px;
             border-radius: 12px;
@@ -301,28 +300,28 @@
             color: var(--text-dark);
             opacity: 0;
             visibility: hidden;
-            transform: translateY(10px);
+            transform: translateY(-50%);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             pointer-events: none;
-            z-index: 10000; /* 确保在所有元素之上 */
+            z-index: 10000;
         }
 
         .music-tooltip::after {
             content: '';
             position: absolute;
-            top: 100%;
-            left: 20px;
+            right: 100%;
+            top: 50%;
+            transform: translateY(-50%);
             width: 0;
             height: 0;
-            border-left: 8px solid transparent;
-            border-right: 8px solid transparent;
-            border-top: 8px solid white;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-right: 8px solid white;
         }
 
         .music-toggle:hover .music-tooltip {
             opacity: 1;
             visibility: visible;
-            transform: translateY(0);
         }
 
         /* Enhanced Hero Section */
@@ -547,7 +546,6 @@
             transition: opacity 0.5s ease-in-out;
         }
 
-        /* 图片加载完成后显示 */
         .avatar-image img.loaded {
             opacity: 1;
         }
@@ -566,7 +564,6 @@
             transition: opacity 0.5s;
         }
 
-        /* 图片加载完成后隐藏GW */
         .avatar-image.loaded::before {
             opacity: 0;
         }
@@ -1107,7 +1104,6 @@
 <body>
     <!-- Background Decoration -->
     <div class="bg-decoration">
-        <!-- Bottom Waves -->
         <div class="waves">
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                 viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
@@ -1129,14 +1125,12 @@
         <button class="music-toggle" id="musicToggle" aria-label="Toggle background music">
             <div class="music-tooltip" id="musicTooltip">Play background music</div>
             <div class="music-icon">
-                <!-- Mute Icon (Default - not playing, 带叉) -->
                 <svg class="mute-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M9 18V5L21 3V16" stroke="#5BA8E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <circle cx="6" cy="18" r="3" stroke="#5BA8E0" stroke-width="2"/>
                     <circle cx="18" cy="16" r="3" stroke="#5BA8E0" stroke-width="2"/>
                     <line x1="3" y1="3" x2="21" y2="21" stroke="#5BA8E0" stroke-width="2" stroke-linecap="round"/>
                 </svg>
-                <!-- Note Icon (Playing state, 无叉旋转) -->
                 <svg class="note-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M9 18V5L21 3V16" stroke="#5BA8E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <circle cx="6" cy="18" r="3" stroke="#5BA8E0" stroke-width="2"/>
@@ -1170,7 +1164,7 @@
                 <p class="hero-subtitle">Interactive Media Specialist</p>
                 <p class="hero-description">Master of Science in Interactive Media graduate from University College Cork, specializing in 3D modeling, animation, software and website development.</p>
                 <div class="hero-links">
-                    <a href="/cdn-cgi/l/email-protection#5d2a3a356e686a6d6d691d3a303c3431733e3230">📧 Email</a>
+                    <a href="mailto:wgh357004@gmail.com">📧 Email</a>
                     <a href="https://linkedin.com/in/guanheng-wang-427320354" target="_blank">💼 LinkedIn</a>
                     <a href="https://github.com/Dylan3570" target="_blank">💻 GitHub</a>
                 </div>
@@ -1315,7 +1309,7 @@
                 <p>Interactive Media Specialist based in Ireland. Creating digital experiences that bridge technology and creativity.</p>
             </div>
             <div class="footer-links">
-                <a href="/cdn-cgi/l/email-protection#2255454a11171512121662454f434b4e0c414d4f">Email</a>
+                <a href="mailto:wgh357004@gmail.com">Email</a>
                 <a href="https://linkedin.com/in/guanheng-wang-427320354" target="_blank">LinkedIn</a>
                 <a href="https://github.com/Dylan3570" target="_blank">GitHub</a>
             </div>
@@ -1328,18 +1322,16 @@
     <!-- Scroll to top button -->
     <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</button>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script>
         // 图片预加载和加载状态处理
         const avatarImg = document.getElementById('avatarImg');
         const avatarImage = document.getElementById('avatarImage');
 
-        // 监听图片加载完成
         avatarImg.addEventListener('load', () => {
             avatarImg.classList.add('loaded');
             avatarImage.classList.add('loaded');
         });
 
-        // 如果图片已经缓存，立即添加loaded类
         if (avatarImg.complete) {
             avatarImg.classList.add('loaded');
             avatarImage.classList.add('loaded');
