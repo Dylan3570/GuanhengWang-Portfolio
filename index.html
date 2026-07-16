@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -690,7 +691,110 @@
         }
 
         .project-card:hover .project-video iframe {
-            transform: scale(1.02);
+            transform: none;
+        }
+
+        /* ============================================= */
+        /* Live Interactive Project Frame                */
+        /* ============================================= */
+        .project-video.interactive {
+            aspect-ratio: 16 / 10;
+            background: linear-gradient(135deg, var(--pale-blue), var(--soft-cloud));
+        }
+
+        .project-video.interactive iframe {
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-video.interactive::after {
+            display: none;
+        }
+
+        .live-badge {
+            position: absolute;
+            top: 18px;
+            left: 18px;
+            z-index: 4;
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 8px 16px;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 18px rgba(91, 168, 224, 0.25);
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: var(--accent-blue);
+            pointer-events: none;
+        }
+
+        .live-badge .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #2ecc71;
+            animation: livePulse 2s infinite;
+        }
+
+        @keyframes livePulse {
+            0%   { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); }
+            70%  { box-shadow: 0 0 0 10px rgba(46, 204, 113, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+        }
+
+        .frame-hint {
+            position: absolute;
+            bottom: 18px;
+            right: 18px;
+            z-index: 4;
+            padding: 8px 16px;
+            border-radius: 50px;
+            background: rgba(44, 62, 80, 0.55);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            pointer-events: none;
+            transition: opacity 0.4s;
+        }
+
+        .project-video.interactive:hover .frame-hint {
+            opacity: 0;
+        }
+
+        .frame-expand {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            z-index: 4;
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 18px rgba(91, 168, 224, 0.25);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-blue);
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .frame-expand:hover {
+            background: linear-gradient(135deg, var(--sky-blue), var(--accent-blue));
+            color: white;
+            transform: scale(1.08);
         }
 
         .project-content {
@@ -1220,6 +1324,16 @@
                 padding: 40px 35px 50px;
             }
 
+            .project-video.interactive {
+                aspect-ratio: 4 / 3;
+            }
+
+            .frame-hint {
+                font-size: 0.72rem;
+                bottom: 12px;
+                right: 12px;
+            }
+
             .section-title {
                 font-size: 2.2rem;
             }
@@ -1376,7 +1490,7 @@
             <div class="section-header">
                 <div class="section-tag">Portfolio</div>
                 <h2 class="section-title">Featured Projects</h2>
-                <p class="section-description">Showcasing my work in iOS development, 3D modeling, and interactive media</p>
+                <p class="section-description">Showcasing my work in iOS development, 3D modeling, and real-time interactive media</p>
             </div>
             
             <div class="project-grid">
@@ -1423,6 +1537,38 @@
 
                         <a href="https://youtu.be/7K7D6bbKqN8" class="project-link" target="_blank">
                             Watch on YouTube →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- WebXR Interactive Demo -->
+                <div class="project-card">
+                    <div class="project-video interactive" id="webxrFrame">
+                        <div class="live-badge"><span class="dot"></span> Live Demo</div>
+                        <button class="frame-expand" id="webxrExpand" aria-label="Open demo in full screen" title="Full screen">&#9974;</button>
+                        <iframe
+                            src="https://dylan3570.github.io/webxr-demo"
+                            title="WebXR interactive demo"
+                            allow="xr-spatial-tracking; fullscreen; accelerometer; gyroscope; magnetometer"
+                            allowfullscreen
+                            loading="lazy"></iframe>
+                        <div class="frame-hint">Click and drag inside to interact</div>
+                    </div>
+                    <div class="project-content">
+                        <div class="project-number">Project 03</div>
+                        <h3 class="project-title">WebXR Interactive Demo</h3>
+                        <p class="project-description">A browser-based interactive 3D scene built with Three.js and WebXR, running live in the frame above &mdash; no plugin or download required. The demo explores real-time rendering and spatial interaction directly in the browser, and supports immersive viewing on WebXR-capable headsets. Drag inside the frame to orbit the scene, or open it full screen for the complete experience.</p>
+
+                        <div class="tech-stack">
+                            <span class="tech-tag">Three.js</span>
+                            <span class="tech-tag">WebXR</span>
+                            <span class="tech-tag">JavaScript</span>
+                            <span class="tech-tag">Real-time Rendering</span>
+                            <span class="tech-tag">Spatial Interaction</span>
+                        </div>
+
+                        <a href="https://dylan3570.github.io/webxr-demo" class="project-link" target="_blank">
+                            Open Full Screen →
                         </a>
                     </div>
                 </div>
@@ -1675,6 +1821,26 @@
         sections.forEach(section => {
             sectionObserver.observe(section);
         });
+
+        // WebXR demo frame - full screen control
+        (function () {
+            const frame = document.getElementById('webxrFrame');
+            const expandBtn = document.getElementById('webxrExpand');
+            if (!frame || !expandBtn) return;
+
+            expandBtn.addEventListener('click', () => {
+                if (document.fullscreenElement || document.webkitFullscreenElement) {
+                    if (document.exitFullscreen) document.exitFullscreen();
+                    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+                } else if (frame.requestFullscreen) {
+                    frame.requestFullscreen();
+                } else if (frame.webkitRequestFullscreen) {
+                    frame.webkitRequestFullscreen();
+                } else {
+                    window.open('https://dylan3570.github.io/webxr-demo', '_blank');
+                }
+            });
+        })();
 
         // 3D Portfolio Lightbox
         (function () {
