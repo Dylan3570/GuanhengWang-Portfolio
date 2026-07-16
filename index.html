@@ -1,1819 +1,1288 @@
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guanheng Wang – Portfolio</title>
-    <!-- Preload critical resources -->
-    <link rel="preload" href="images/Picture03.jpeg" as="image">
+    <title>Virtual Classroom - Three.js Assignment</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --sky-blue: #5BA8E0;
-            --light-blue: #81C3F0;
-            --pale-blue: #D4E9F7;
-            --accent-blue: #3B8ACC;
-            --soft-cloud: #F0F8FF;
-            --text-dark: #2C3E50;
-            --text-light: #5A6C7D;
-            --white: #FFFFFF;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--text-dark);
-            background: linear-gradient(135deg, #F0F8FF 0%, #E6F3FF 50%, #D4E9F7 100%);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Clean Wave Animation Background */
-        .bg-decoration {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-
-        /* Bottom Waves */
-        .waves {
+        body { margin: 0; overflow: hidden; background: #000; }
+        canvas { display: block; }
+        #playButton, #resetButton {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 15vh;
-            min-height: 150px;
-            max-height: 200px;
-        }
-
-        .waves svg {
-            width: 100%;
-            height: 100%;
-        }
-
-        .parallax > use {
-            animation: wave-move 25s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
-        }
-
-        .parallax > use:nth-child(1) {
-            animation-delay: -2s;
-            animation-duration: 7s;
-            fill: rgba(91, 168, 224, 0.22);
-        }
-
-        .parallax > use:nth-child(2) {
-            animation-delay: -3s;
-            animation-duration: 10s;
-            fill: rgba(129, 195, 240, 0.18);
-        }
-
-        .parallax > use:nth-child(3) {
-            animation-delay: -4s;
-            animation-duration: 13s;
-            fill: rgba(212, 233, 247, 0.25);
-        }
-
-        .parallax > use:nth-child(4) {
-            animation-delay: -5s;
-            animation-duration: 20s;
-            fill: rgba(91, 168, 224, 0.3);
-        }
-
-        @keyframes wave-move {
-            0% {
-                transform: translate3d(-90px, 0, 0);
-            }
-            100% { 
-                transform: translate3d(85px, 0, 0);
-            }
-        }
-
-        /* Enhanced Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(30px) saturate(180%);
-            -webkit-backdrop-filter: blur(30px) saturate(180%);
-            box-shadow: 0 2px 40px rgba(91, 168, 224, 0.08);
-            z-index: 1000;
-            padding: 20px 0;
-            border-bottom: 1px solid rgba(91, 168, 224, 0.12);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: visible;
-        }
-
-        nav.scrolled {
-            padding: 15px 0;
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 4px 50px rgba(91, 168, 224, 0.12);
-        }
-
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 60px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            overflow: visible;
-        }
-
-        .logo {
-            font-size: 1.7em;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--sky-blue), var(--accent-blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -1.5px;
-            transition: all 0.3s;
-            display: inline-block;
-            line-height: 1.2;
-            padding: 0 2px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 45px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: var(--text-dark);
-            text-decoration: none;
-            font-size: 0.95em;
-            font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            padding: 8px 0;
-            letter-spacing: 0.3px;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 2.5px;
-            background: linear-gradient(90deg, var(--sky-blue), var(--accent-blue));
-            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 2px;
-        }
-
-        .nav-links a:hover {
-            color: var(--sky-blue);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        /* Music Player Styles */
-        .music-player {
-            position: fixed;
-            bottom: 40px;
-            left: 40px;
-            z-index: 999;
-        }
-
-        .music-toggle {
-            position: relative;
-            width: 56px;
-            height: 56px;
-            background: white;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 8px 25px rgba(91, 168, 224, 0.2);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: visible;
-        }
-
-        .music-toggle::before {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            background: linear-gradient(135deg, var(--sky-blue), var(--accent-blue));
-            border-radius: 50%;
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.3s;
-            clip-path: circle(50% at 50% 50%);
-        }
-
-        .music-toggle:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 35px rgba(91, 168, 224, 0.35);
-        }
-
-        .music-toggle:hover::before {
-            opacity: 1;
-        }
-
-        .music-toggle:active {
-            transform: translateY(-3px) scale(0.95);
-        }
-
-        /* Music Icon */
-        .music-icon {
-            width: 24px;
-            height: 24px;
-            position: relative;
-            transition: all 0.3s;
-            z-index: 1;
-        }
-
-        .music-toggle:hover .music-icon {
-            transform: scale(1.1);
-        }
-
-        /* Mute Icon (Default - not playing) */
-        .mute-icon {
-            position: absolute;
-            inset: 0;
-            opacity: 1;
-            transition: all 0.3s;
-            z-index: 2;
-        }
-
-        .music-toggle.playing .mute-icon {
-            opacity: 0;
-            transform: rotate(-90deg) scale(0);
-        }
-
-        /* Note Icon (Playing state) */
-        .note-icon {
-            position: absolute;
-            inset: 0;
-            opacity: 0;
-            transition: all 0.3s;
-            z-index: 2;
-        }
-
-        .music-toggle.playing .note-icon {
-            opacity: 1;
-            animation: rotate 3s linear infinite;
-        }
-
-        @keyframes rotate {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* Tooltip - displayed on the right side */
-        .music-tooltip {
-            position: absolute;
-            left: calc(100% + 15px);
-            top: 50%;
-            background: white;
-            padding: 12px 20px;
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(91, 168, 224, 0.2);
-            white-space: nowrap;
+            left: 10px;
+            padding: 8px 12px;
             font-size: 14px;
-            font-weight: 600;
-            color: var(--text-dark);
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-50%);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            pointer-events: none;
-            z-index: 10000;
-        }
-
-        .music-tooltip::after {
-            content: '';
-            position: absolute;
-            right: 100%;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 0;
-            height: 0;
-            border-top: 8px solid transparent;
-            border-bottom: 8px solid transparent;
-            border-right: 8px solid white;
-        }
-
-        .music-toggle:hover .music-tooltip {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* Enhanced Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 120px 50px 80px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-            display: grid;
-            grid-template-columns: 1.2fr 380px;
-            align-items: center;
-            gap: 100px;
-        }
-
-        .hero-content {
-            padding-right: 20px;
-            animation: fadeInUp 1s ease-out;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .hero-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 28px;
-            background: rgba(91, 168, 224, 0.1);
-            color: var(--sky-blue);
-            border-radius: 50px;
-            font-size: 0.9em;
-            font-weight: 700;
-            margin-bottom: 30px;
-            border: 1.5px solid rgba(91, 168, 224, 0.25);
-            box-shadow: 0 4px 15px rgba(91, 168, 224, 0.08);
-            transition: all 0.3s;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                box-shadow: 0 4px 15px rgba(91, 168, 224, 0.08);
-            }
-            50% {
-                box-shadow: 0 4px 20px rgba(91, 168, 224, 0.15);
-            }
-        }
-
-        .hero-tag:hover {
-            background: rgba(91, 168, 224, 0.15);
-            transform: translateY(-2px);
-        }
-
-        .hero h1 {
-            font-size: clamp(2.8rem, 5vw, 4.2rem);
-            font-weight: 900;
-            margin-bottom: 25px;
-            color: var(--text-dark);
-            line-height: 1.15;
-            letter-spacing: -2px;
-        }
-
-        .hero h1 .highlight {
-            background: linear-gradient(135deg, var(--sky-blue), var(--accent-blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            position: relative;
-            display: inline-block;
-        }
-
-        .hero-subtitle {
-            font-size: 1.45rem;
-            color: var(--sky-blue);
-            font-weight: 700;
-            margin-bottom: 20px;
-            letter-spacing: 0.5px;
-        }
-
-        .hero-description {
-            font-size: 1.15rem;
-            color: var(--text-light);
-            margin-bottom: 35px;
-            line-height: 1.8;
-            max-width: 600px;
-        }
-
-        .hero-links {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .hero-links a {
-            color: var(--text-light);
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 24px;
-            border-radius: 50px;
-            background: rgba(255, 255, 255, 0.7);
-            border: 1.5px solid rgba(91, 168, 224, 0.15);
-            backdrop-filter: blur(10px);
-        }
-
-        .hero-links a:hover {
-            color: var(--sky-blue);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(91, 168, 224, 0.2);
-            background: rgba(255, 255, 255, 0.9);
-            border-color: var(--sky-blue);
-        }
-
-        /* Enhanced Avatar Section */
-        .hero-avatar {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            animation: fadeInScale 1s ease-out 0.2s both;
-        }
-
-        @keyframes fadeInScale {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .avatar-container {
-            position: relative;
-            width: 380px;
-            height: 380px;
-        }
-
-        .avatar-glow {
-            position: absolute;
-            inset: -20px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--sky-blue), var(--light-blue), var(--accent-blue));
-            filter: blur(40px);
-            opacity: 0.4;
-            animation: glowPulse 4s infinite ease-in-out;
-        }
-
-        @keyframes glowPulse {
-            0%, 100% {
-                opacity: 0.4;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 0.6;
-                transform: scale(1.05);
-            }
-        }
-
-        .avatar-ring {
-            position: absolute;
-            inset: 0;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--sky-blue), var(--light-blue), var(--accent-blue));
-            padding: 6px;
-        }
-
-        .avatar-inner {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: white;
-            padding: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 10px 40px rgba(91, 168, 224, 0.15);
-        }
-
-        .avatar-image {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            overflow: hidden;
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.05);
-        }
-
-        .avatar-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            position: relative;
-            z-index: 2;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-        }
-
-        .avatar-image img.loaded {
-            opacity: 1;
-        }
-
-        .avatar-image::before {
-            content: 'GW';
-            position: absolute;
-            font-size: 5rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--sky-blue), var(--accent-blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            opacity: 0.15;
-            z-index: 1;
-            transition: opacity 0.5s;
-        }
-
-        .avatar-image.loaded::before {
-            opacity: 0;
-        }
-
-        /* Container */
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 100px 60px;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Enhanced Section */
-        .section {
-            margin-bottom: 140px;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 80px;
-        }
-
-        .section-tag {
-            display: inline-block;
-            padding: 10px 28px;
-            background: rgba(91, 168, 224, 0.1);
-            color: var(--sky-blue);
-            border-radius: 50px;
-            font-size: 0.9rem;
-            font-weight: 700;
-            margin-bottom: 25px;
-            border: 1.5px solid rgba(91, 168, 224, 0.25);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .section-title {
-            font-size: clamp(2.8rem, 5vw, 4.2rem);
-            font-weight: 900;
-            color: var(--text-dark);
-            margin-bottom: 25px;
-            letter-spacing: -2px;
-            line-height: 1.15;
-        }
-
-        .section-description {
-            font-size: 1.25rem;
-            color: var(--text-light);
-            max-width: 750px;
-            margin: 0 auto;
-            line-height: 1.8;
-        }
-
-        /* Enhanced Project Cards */
-        .project-grid {
-            display: grid;
-            gap: 80px;
-        }
-
-        .project-card {
-            background: white;
-            border-radius: 28px;
-            overflow: hidden;
-            box-shadow: 0 15px 60px rgba(91, 168, 224, 0.1);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(91, 168, 224, 0.08);
-            position: relative;
-        }
-
-        .project-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--sky-blue), var(--accent-blue));
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .project-card:hover {
-            transform: translateY(-12px);
-            box-shadow: 0 25px 80px rgba(91, 168, 224, 0.2);
-        }
-
-        .project-card:hover::before {
-            opacity: 1;
-        }
-
-        .project-video {
-            width: 100%;
-            aspect-ratio: 16/9;
-            background: #000;
-            position: relative;
-            display: block;
-            overflow: hidden;
-        }
-
-        .project-video::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.05) 100%);
-            pointer-events: none;
-        }
-
-        .project-video iframe {
-            width: 100%;
-            height: 100%;
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+            cursor: pointer;
             border: none;
-            display: block;
-            transition: transform 0.3s;
+            border-radius: 5px;
+            color: white;
+            background: #2A2A2A;
+            transition: background 0.3s;
+            z-index: 200;
         }
+        #playButton { top: 10px; }
+        #resetButton { top: 50px; }
+        #playButton:hover, #resetButton:hover { background: #1976D2; }
+        #playButton:active, #resetButton:active { background: #0D47A1; }
 
-        .project-card:hover .project-video iframe {
-            transform: none;
-        }
-
-        /* ============================================= */
-        /* Live Interactive Project Frame                */
-        /* ============================================= */
-        .project-video.interactive {
-            aspect-ratio: 16 / 10;
-            background: linear-gradient(135deg, var(--pale-blue), var(--soft-cloud));
-        }
-
-        .project-video.interactive iframe {
-            position: relative;
-            z-index: 1;
-        }
-
-        .project-video.interactive::after {
-            display: none;
-        }
-
-        .frame-expand {
+        /* Settings gear button */
+        #settingsToggle {
             position: absolute;
-            top: 18px;
-            right: 18px;
-            z-index: 4;
+            top: 10px;
+            right: 10px;
             width: 40px;
             height: 40px;
             border: none;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            box-shadow: 0 4px 18px rgba(91, 168, 224, 0.25);
+            background: rgba(42, 42, 42, 0.85);
+            color: #fff;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--accent-blue);
-            font-size: 1rem;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: background 0.3s, transform 0.3s;
+            z-index: 200;
+            padding: 0;
         }
+        #settingsToggle:hover { background: #1976D2; }
+        #settingsToggle.open { transform: rotate(90deg); }
+        #settingsToggle svg { width: 22px; height: 22px; fill: #fff; }
 
-        .frame-expand:hover {
-            background: linear-gradient(135deg, var(--sky-blue), var(--accent-blue));
-            color: white;
-            transform: scale(1.08);
-        }
-
-        .project-content {
-            padding: 55px 55px 65px;
-        }
-
-        .project-number {
-            font-size: 0.85rem;
-            color: var(--sky-blue);
-            font-weight: 800;
-            margin-bottom: 18px;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-        }
-
-        .project-title {
-            font-size: 2.8rem;
-            font-weight: 900;
-            color: var(--text-dark);
-            margin-bottom: 25px;
-            line-height: 1.2;
-            letter-spacing: -1.5px;
-            transition: color 0.3s;
-        }
-
-        .project-card:hover .project-title {
-            color: var(--sky-blue);
-        }
-
-        .project-description {
-            font-size: 1.1rem;
-            color: var(--text-light);
-            margin-bottom: 35px;
-            line-height: 1.9;
-        }
-
-        .tech-stack {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 14px;
-            margin-bottom: 40px;
-        }
-
-        .tech-tag {
-            padding: 12px 24px;
-            background: linear-gradient(135deg, var(--pale-blue), rgba(212, 233, 247, 0.5));
-            color: var(--sky-blue);
-            border-radius: 25px;
-            font-size: 0.9rem;
-            font-weight: 700;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1.5px solid rgba(91, 168, 224, 0.15);
-        }
-
-        .tech-tag:hover {
-            background: linear-gradient(135deg, var(--sky-blue), var(--accent-blue));
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(91, 168, 224, 0.3);
-            border-color: transparent;
-        }
-
-        .project-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            padding: 16px 36px;
-            background: linear-gradient(135deg, var(--sky-blue), var(--accent-blue));
-            color: white;
-            text-decoration: none;
-            font-weight: 700;
-            border-radius: 50px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 10px 30px rgba(91, 168, 224, 0.25);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .project-link::before {
-            content: '';
+        /* Settings panel */
+        #settingsPanel {
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s;
+            top: 58px;
+            right: 10px;
+            width: 260px;
+            background: rgba(25, 25, 25, 0.92);
+            border-radius: 6px;
+            padding: 10px;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+            color: #eee;
+            z-index: 199;
+            display: none;
         }
-
-        .project-link:hover::before {
-            left: 100%;
-        }
-
-        .project-link:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 15px 40px rgba(91, 168, 224, 0.4);
-        }
-
-        /* ============================================= */
-        /* 3D Portfolio Gallery                          */
-        /* ============================================= */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 35px;
-        }
-
-        .gallery-item {
-            position: relative;
-            margin: 0;
-            border-radius: 24px;
-            overflow: hidden;
-            background: white;
-            box-shadow: 0 10px 40px rgba(91, 168, 224, 0.1);
-            border: 1px solid rgba(91, 168, 224, 0.08);
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            aspect-ratio: 16 / 9;
-        }
-
-        .gallery-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--sky-blue), var(--accent-blue));
-            opacity: 0;
-            transition: opacity 0.3s;
-            z-index: 3;
-        }
-
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .gallery-item figcaption {
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            padding: 40px 24px 20px;
-            color: white;
-            font-weight: 700;
-            font-size: 1.05rem;
-            letter-spacing: 0.3px;
-            background: linear-gradient(180deg, transparent 0%, rgba(44, 62, 80, 0.85) 100%);
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 2;
-        }
-
-        .gallery-item:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 25px 70px rgba(91, 168, 224, 0.22);
-        }
-
-        .gallery-item:hover::before {
-            opacity: 1;
-        }
-
-        .gallery-item:hover img {
-            transform: scale(1.06);
-        }
-
-        .gallery-item:hover figcaption {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Lightbox */
-        .lightbox {
-            position: fixed;
-            inset: 0;
-            background: rgba(44, 62, 80, 0.92);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 2000;
-            padding: 40px;
-        }
-
-        .lightbox.open {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .lightbox img {
-            max-width: 90vw;
-            max-height: 85vh;
-            border-radius: 16px;
-            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.5);
-            transform: scale(0.95);
-            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .lightbox.open img {
-            transform: scale(1);
-        }
-
-        .lightbox-close {
-            position: absolute;
-            top: 30px;
-            right: 40px;
-            width: 52px;
-            height: 52px;
-            border: none;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.15);
-            color: white;
-            font-size: 1.6rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
-
-        .lightbox-close:hover {
-            background: var(--sky-blue);
-            transform: rotate(90deg);
-        }
-
-        .lightbox-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 56px;
-            height: 56px;
-            border: none;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.15);
-            color: white;
-            font-size: 1.8rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
-
-        .lightbox-nav:hover {
-            background: var(--sky-blue);
-        }
-
-        .lightbox-prev { left: 30px; }
-        .lightbox-next { right: 30px; }
-
-        /* Enhanced Skills Grid */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 35px;
-        }
-
-        .skill-card {
-            background: white;
-            padding: 50px 45px;
-            border-radius: 24px;
-            box-shadow: 0 10px 40px rgba(91, 168, 224, 0.08);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(91, 168, 224, 0.08);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .skill-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--sky-blue), var(--accent-blue));
-            transform: scaleX(0);
-            transition: transform 0.3s;
-        }
-
-        .skill-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 50px rgba(91, 168, 224, 0.18);
-            border-color: var(--pale-blue);
-        }
-
-        .skill-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .skill-icon {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, var(--pale-blue), rgba(255, 255, 255, 0.9));
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            margin-bottom: 28px;
-            box-shadow: 0 8px 20px rgba(91, 168, 224, 0.12);
-            transition: all 0.3s;
-        }
-
-        .skill-card:hover .skill-icon {
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 12px 30px rgba(91, 168, 224, 0.2);
-        }
-
-        .skill-card h4 {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--text-dark);
-            margin-bottom: 25px;
-            letter-spacing: -0.5px;
-        }
-
-        .skill-card ul {
-            list-style: none;
-        }
-
-        .skill-card li {
-            padding: 12px 0;
-            color: var(--text-light);
-            font-size: 1.05rem;
-            transition: all 0.3s;
-            padding-left: 25px;
-            position: relative;
-            font-weight: 500;
-        }
-
-        .skill-card li::before {
-            content: '▸';
-            position: absolute;
-            left: 0;
-            color: var(--sky-blue);
+        #settingsPanel.open { display: block; }
+        #settingsPanel h4 {
+            margin: 4px 0 8px 2px;
+            font-size: 11px;
             font-weight: bold;
-            font-size: 1.2rem;
-            transition: all 0.3s;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #9aa;
         }
-
-        .skill-card li:hover {
-            color: var(--sky-blue);
-            padding-left: 30px;
-        }
-
-        .skill-card li:hover::before {
-            transform: translateX(5px);
-        }
-
-        /* Enhanced Footer */
-        footer {
-            background: linear-gradient(135deg, rgba(255,255,255,0.98), rgba(240,248,255,0.98));
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            padding: 80px 60px 50px;
-            margin-top: 120px;
-            border-top: 1px solid rgba(91, 168, 224, 0.15);
-            position: relative;
-        }
-
-        footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--sky-blue), transparent);
-        }
-
-        .footer-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .footer-brand {
-            margin-bottom: 40px;
-        }
-
-        .footer-brand h3 {
-            font-size: 2rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--sky-blue), var(--accent-blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 18px;
-            letter-spacing: -1px;
-        }
-
-        .footer-brand p {
-            color: var(--text-light);
-            max-width: 650px;
-            margin: 0 auto;
-            line-height: 1.8;
-            font-size: 1.05rem;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin: 40px 0;
-            flex-wrap: wrap;
-        }
-
-        .footer-links a {
-            color: var(--text-light);
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-            font-size: 1rem;
-            padding: 10px 20px;
-            border-radius: 50px;
-            border: 1.5px solid transparent;
-        }
-
-        .footer-links a:hover {
-            color: var(--sky-blue);
-            transform: translateY(-3px);
-            border-color: rgba(91, 168, 224, 0.3);
-            background: rgba(91, 168, 224, 0.05);
-        }
-
-        .footer-bottom {
-            padding-top: 35px;
-            border-top: 1px solid rgba(91, 168, 224, 0.1);
-            color: var(--text-light);
-            font-size: 0.95rem;
-            margin-top: 30px;
-        }
-
-        /* Scroll to top button */
-        .scroll-top {
-            position: fixed;
-            bottom: 40px;
-            right: 40px;
-            width: 55px;
-            height: 55px;
-            background: linear-gradient(135deg, var(--sky-blue), var(--accent-blue));
-            color: white;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            box-shadow: 0 8px 25px rgba(91, 168, 224, 0.3);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s;
-            z-index: 998;
-        }
-
-        .scroll-top.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .scroll-top:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 35px rgba(91, 168, 224, 0.4);
-        }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .hero-container {
-                grid-template-columns: 1fr;
-                gap: 60px;
-                text-align: center;
-            }
-
-            .hero-content {
-                padding-right: 0;
-            }
-
-            .hero-description {
-                max-width: 100%;
-            }
-
-            .hero-links {
-                justify-content: center;
-            }
-
-            .avatar-container {
-                width: 320px;
-                height: 320px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nav-container,
-            .container,
-            .hero,
-            footer {
-                padding-left: 30px;
-                padding-right: 30px;
-            }
-
-            .nav-links {
-                gap: 30px;
-                font-size: 0.9em;
-            }
-
-            .hero {
-                padding-top: 140px;
-            }
-
-            .avatar-container {
-                width: 280px;
-                height: 280px;
-            }
-
-            .project-content {
-                padding: 40px 35px 50px;
-            }
-
-            .project-video.interactive {
-                aspect-ratio: 4 / 3;
-            }
-
-            .section-title {
-                font-size: 2.2rem;
-            }
-
-            .project-title {
-                font-size: 2rem;
-            }
-
-            .skills-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .gallery-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 20px;
-            }
-
-            .lightbox-nav { width: 44px; height: 44px; font-size: 1.4rem; }
-            .lightbox-prev { left: 12px; }
-            .lightbox-next { right: 12px; }
-
-            .music-player {
-                bottom: 20px;
-                left: 20px;
-            }
-
-            .scroll-top {
-                bottom: 20px;
-                right: 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .avatar-container {
-                width: 240px;
-                height: 240px;
-            }
-
-            .hero h1 {
-                font-size: 2.2rem;
-            }
-
-            .nav-links {
-                gap: 20px;
-            }
-
-            .skills-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .gallery-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+        /* Host containers for stats.js and dat.GUI */
+        #statsHost { position: relative; height: 48px; overflow: hidden; margin-bottom: 8px; }
+        #statsHost canvas { border-radius: 4px; }
+        #guiHost .dg.main { margin: 0; float: none; }
+        #guiHost .dg.main .close-button { display: none; }
+        #guiHost .dg.ac { position: static; }
     </style>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-K56J051VD5"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-K56J051VD5');
-    </script>
 </head>
 <body>
-    <!-- Background Decoration -->
-    <div class="bg-decoration">
-        <div class="waves">
-            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
-                <defs>
-                    <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
-                </defs>
-                <g class="parallax">
-                    <use xlink:href="#gentle-wave" x="48" y="0" />
-                    <use xlink:href="#gentle-wave" x="48" y="3" />
-                    <use xlink:href="#gentle-wave" x="48" y="5" />
-                    <use xlink:href="#gentle-wave" x="48" y="7" />
-                </g>
-            </svg>
-        </div>
+    <!-- Name: Wang Guanheng  Student ID: 124100726 -->
+    <button id="playButton">Play Audio</button>
+    <button id="resetButton">Reset View</button>
+
+    <button id="settingsToggle" title="Settings" aria-label="Settings">
+        <svg viewBox="0 0 24 24"><path d="M19.14 12.94a7.07 7.07 0 000-1.88l2.03-1.58a.5.5 0 00.12-.64l-1.92-3.32a.5.5 0 00-.6-.22l-2.39.96a7.03 7.03 0 00-1.62-.94l-.36-2.54a.5.5 0 00-.5-.42h-3.84a.5.5 0 00-.5.42l-.36 2.54c-.58.24-1.12.56-1.62.94l-2.39-.96a.5.5 0 00-.6.22L2.67 8.84a.5.5 0 00.12.64l2.03 1.58a7.07 7.07 0 000 1.88l-2.03 1.58a.5.5 0 00-.12.64l1.92 3.32c.12.21.37.3.6.22l2.39-.96c.5.38 1.04.7 1.62.94l.36 2.54c.04.24.25.42.5.42h3.84c.25 0 .46-.18.5-.42l.36-2.54c.58-.24 1.12-.56 1.62-.94l2.39.96c.23.08.48-.01.6-.22l1.92-3.32a.5.5 0 00-.12-.64l-2.03-1.58zM12 15.6A3.6 3.6 0 1112 8.4a3.6 3.6 0 010 7.2z"/></svg>
+    </button>
+
+    <div id="settingsPanel">
+        <h4>Performance</h4>
+        <div id="statsHost"></div>
+        <h4>Controls</h4>
+        <div id="guiHost"></div>
     </div>
-
-    <!-- Music Player -->
-    <div class="music-player">
-        <button class="music-toggle" id="musicToggle" aria-label="Toggle background music">
-            <div class="music-tooltip" id="musicTooltip">Play background music</div>
-            <div class="music-icon">
-                <svg class="mute-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9 18V5L21 3V16" stroke="#5BA8E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <circle cx="6" cy="18" r="3" stroke="#5BA8E0" stroke-width="2"/>
-                    <circle cx="18" cy="16" r="3" stroke="#5BA8E0" stroke-width="2"/>
-                    <line x1="3" y1="3" x2="21" y2="21" stroke="#5BA8E0" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-                <svg class="note-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9 18V5L21 3V16" stroke="#5BA8E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <circle cx="6" cy="18" r="3" stroke="#5BA8E0" stroke-width="2"/>
-                    <circle cx="18" cy="16" r="3" stroke="#5BA8E0" stroke-width="2"/>
-                </svg>
-            </div>
-        </button>
-        <audio id="backgroundMusic" loop preload="none">
-            <source src="music/lofi-background-music-430104.mp3" type="audio/mpeg">
-        </audio>
-    </div>
-
-    <!-- Navigation -->
-    <nav id="navbar">
-        <div class="nav-container">
-            <div class="logo">Asa</div>
-            <div class="nav-links">
-                <a href="#projects">Projects</a>
-                <a href="#portfolio-3d">3D Art</a>
-                <a href="#skills">Skills</a>
-                <a href="#contact">Contact</a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-container">
-            <div class="hero-content">
-                <div class="hero-tag">✨ Available for Opportunities</div>
-                <h1>Hi, I'm <span class="highlight">Guanheng Wang</span></h1>
-                <p class="hero-subtitle">Interactive Media Specialist</p>
-                <p class="hero-description">Master of Science in Interactive Media graduate from University College Cork, specializing in 3D modeling, animation, software and website development.</p>
-                <div class="hero-links">
-                    <a href="mailto:wgh357004@gmail.com">📧 Email</a>
-                    <a href="https://linkedin.com/in/guanheng-wang-427320354" target="_blank">💼 LinkedIn</a>
-                    <a href="https://github.com/Dylan3570" target="_blank">💻 GitHub</a>
-                </div>
-            </div>
-            <div class="hero-avatar">
-                <div class="avatar-container">
-                    <div class="avatar-glow"></div>
-                    <div class="avatar-ring">
-                        <div class="avatar-inner">
-                            <div class="avatar-image" id="avatarImage">
-                                <img src="images/Picture04.jpg" alt="Guanheng Wang" id="avatarImg">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Main Content -->
-    <div class="container">
-        
-        <!-- Projects Section -->
-        <section id="projects" class="section">
-            <div class="section-header">
-                <div class="section-tag">Portfolio</div>
-                <h2 class="section-title">Featured Projects</h2>
-                <p class="section-description">Showcasing my work in iOS development, 3D modeling, and real-time interactive media</p>
-            </div>
-            
-            <div class="project-grid">
-                <!-- FocusMate Project -->
-                <div class="project-card">
-                    <div class="project-video">
-                        <iframe src="https://www.youtube.com/embed/gZGz5pA5KOI" allowfullscreen loading="lazy"></iframe>
-                    </div>
-                    <div class="project-content">
-                        <div class="project-number">Project 01</div>
-                        <h3 class="project-title">FocusMate</h3>
-                        <p class="project-description">FocusMate is an AI-supported mobile application designed to reduce student procrastination through evidence-based behavioural interventions. Developed as my Master&rsquo;s thesis, the project explores how human-centred interaction design and intelligent assistance can support self-regulated learning. I independently designed, implemented, and evaluated the system, integrating AI-generated recommendations with iterative user-centred evaluation to refine both the interaction design and overall user experience.</p>
-                        
-                        <div class="tech-stack">
-                            <span class="tech-tag">Swift</span>
-                            <span class="tech-tag">SwiftUI</span>
-                            <span class="tech-tag">iOS Development</span>
-                            <span class="tech-tag">UI/UX Design</span>
-                            <span class="tech-tag">OpenAI API Integration</span>
-                        </div>
-
-                        <a href="https://apps.apple.com/ie/app/focusmate/id6752814522" class="project-link" target="_blank">
-                            Download on App Store →
-                        </a>
-                    </div>
-                </div>
-
-                <!-- 3D Modeling Project -->
-                <div class="project-card">
-                    <div class="project-video">
-                        <iframe src="https://www.youtube.com/embed/7K7D6bbKqN8" allowfullscreen loading="lazy"></iframe>
-                    </div>
-                    <div class="project-content">
-                        <div class="project-number">Project 02</div>
-                        <h3 class="project-title">3D Environment Design</h3>
-                        <p class="project-description">A complete 3D production pipeline featuring props modeling and environment layout, demonstrating technical and artistic proficiency in building cohesive environments for games and cinematic presentation. The project showcases modeling, texturing, lighting, and rendering skills using industry-standard tools.</p>
-                        
-                        <div class="tech-stack">
-                            <span class="tech-tag">Maya</span>
-                            <span class="tech-tag">ZBrush</span>
-                            <span class="tech-tag">Substance Painter</span>
-                            <span class="tech-tag">Unreal Engine</span>
-                        </div>
-
-                        <a href="https://youtu.be/7K7D6bbKqN8" class="project-link" target="_blank">
-                            Watch on YouTube →
-                        </a>
-                    </div>
-                </div>
-
-                <!-- WebXR Interactive Demo -->
-                <div class="project-card">
-                    <div class="project-video interactive" id="webxrFrame">
-                        <button class="frame-expand" id="webxrExpand" aria-label="Open demo in full screen" title="Full screen">&#9974;</button>
-                        <iframe
-                            src="https://dylan3570.github.io/webxr-demo"
-                            title="WebXR interactive demo"
-                            allow="xr-spatial-tracking; fullscreen; accelerometer; gyroscope; magnetometer"
-                            allowfullscreen
-                            loading="lazy"></iframe>
-                    </div>
-                    <div class="project-content">
-                        <div class="project-number">Project 03</div>
-                        <h3 class="project-title">WebXR Interactive Demo</h3>
-                        <p class="project-description">A browser-based interactive 3D scene built with Three.js and WebXR, running live in the frame above &mdash; no plugin or download required. The demo explores real-time rendering and spatial interaction directly in the browser, and supports immersive viewing on WebXR-capable headsets. Interact with the scene directly in the frame, or open it in full screen for the complete immersive experience.</p>
-
-                        <div class="tech-stack">
-                            <span class="tech-tag">Three.js</span>
-                            <span class="tech-tag">WebXR</span>
-                            <span class="tech-tag">JavaScript</span>
-                            <span class="tech-tag">Spatial Interaction</span>
-                        </div>
-
-                        <a href="https://dylan3570.github.io/webxr-demo" class="project-link" target="_blank">
-                            Open Full Screen →
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 3D Portfolio Gallery Section -->
-        <section id="portfolio-3d" class="section">
-            <div class="section-header">
-                <div class="section-tag">3D Art</div>
-                <h2 class="section-title">3D Portfolio</h2>
-                <p class="section-description">Selected 3D prop, scene, and character work — modeling, texturing, and rendering across Maya, ZBrush, Substance Painter, and Unreal Engine</p>
-            </div>
-
-            <div class="gallery-grid">
-                <figure class="gallery-item" data-index="0">
-                    <img src="images/3d/slide01.jpg" alt="Japanese shrine scene with character, final render" loading="lazy">
-                    <figcaption>Scene — Final Render</figcaption>
-                </figure>
-                <figure class="gallery-item" data-index="1">
-                    <img src="images/3d/slide02.jpg" alt="Character model with texture layout" loading="lazy">
-                    <figcaption>Character — Texturing</figcaption>
-                </figure>
-                <figure class="gallery-item" data-index="2">
-                    <img src="images/3d/slide03.jpg" alt="Character wireframe" loading="lazy">
-                    <figcaption>Character — Wireframe</figcaption>
-                </figure>
-                <figure class="gallery-item" data-index="3">
-                    <img src="images/3d/slide04.jpg" alt="Character UV layout in Maya" loading="lazy">
-                    <figcaption>Character — UV Layout</figcaption>
-                </figure>
-                <figure class="gallery-item" data-index="4">
-                    <img src="images/3d/slide05.jpg" alt="Character clothing model" loading="lazy">
-                    <figcaption>Character — Clothing</figcaption>
-                </figure>
-                <figure class="gallery-item" data-index="5">
-                    <img src="images/3d/slide06.jpg" alt="Character head model" loading="lazy">
-                    <figcaption>Character — Head Model</figcaption>
-                </figure>
-                <figure class="gallery-item" data-index="6">
-                    <img src="images/3d/slide07.jpg" alt="Japanese shrine building render" loading="lazy">
-                    <figcaption>Prop — Shrine</figcaption>
-                </figure>
-                <figure class="gallery-item" data-index="7">
-                    <img src="images/3d/slide08.jpg" alt="Japanese lantern prop render" loading="lazy">
-                    <figcaption>Prop — Lantern</figcaption>
-                </figure>
-                <figure class="gallery-item" data-index="8">
-                    <img src="images/3d/slide09.jpg" alt="Medieval town house render, front view" loading="lazy">
-                    <figcaption>Prop — Medieval House</figcaption>
-                </figure>
-                <figure class="gallery-item" data-index="9">
-                    <img src="images/3d/slide10.jpg" alt="Medieval town house render, side view" loading="lazy">
-                    <figcaption>Prop — Medieval House</figcaption>
-                </figure>
-                <figure class="gallery-item" data-index="10">
-                    <img src="images/3d/slide11.jpg" alt="Roof detail with decorative element" loading="lazy">
-                    <figcaption>Prop — Plant</figcaption>
-                </figure>
-                <figure class="gallery-item" data-index="11">
-                    <img src="images/3d/slide12.jpg" alt="Battle drum prop, final render" loading="lazy">
-                    <figcaption>Prop — Battle Drum</figcaption>
-                </figure>
-                <figure class="gallery-item" data-index="12">
-                    <img src="images/3d/slide13.jpg" alt="Retro gramophone prop, final render" loading="lazy">
-                    <figcaption>Prop — Gramophone</figcaption>
-                </figure>
-                <figure class="gallery-item" data-index="13">
-                    <img src="images/3d/slide14.jpg" alt="Retro telephone prop, final render" loading="lazy">
-                    <figcaption>Prop — Telephone</figcaption>
-                </figure>
-                <figure class="gallery-item" data-index="14">
-                    <img src="images/3d/slide15.jpg" alt="Cabinet scene wireframe" loading="lazy">
-                    <figcaption>Prop — Cabinet Wireframe</figcaption>
-                </figure>
-            </div>
-        </section>
-
-        <!-- Skills Section -->
-        <section id="skills" class="section">
-            <div class="section-header">
-                <div class="section-tag">Expertise</div>
-                <h2 class="section-title">Technical Skills</h2>
-                <p class="section-description">Tools and technologies I use to bring ideas to life</p>
-            </div>
-            
-            <div class="skills-grid">
-                <div class="skill-card">
-                    <div class="skill-icon">🎨</div>
-                    <h4>3D Production</h4>
-                    <ul>
-                        <li>Maya</li>
-                        <li>Blender</li>
-                        <li>ZBrush</li>
-                        <li>Substance Painter</li>
-                        <li>3ds Max</li>
-                    </ul>
-                </div>
-                <div class="skill-card">
-                    <div class="skill-icon">💻</div>
-                    <h4>Development</h4>
-                    <ul>
-                        <li>Swift</li>
-                        <li>C#</li>
-                        <li>JavaScript</li>
-                        <li>Python</li>
-                        <li>HTML/CSS</li>
-                    </ul>
-                </div>
-                <div class="skill-card">
-                    <div class="skill-icon">✏️</div>
-                    <h4>Design & Media</h4>
-                    <ul>
-                        <li>Adobe Photoshop</li>
-                        <li>Illustrator</li>
-                        <li>Final Cut Pro</li>
-                        <li>Logic Pro</li>
-                        <li>Figma</li>
-                    </ul>
-                </div>
-                <div class="skill-card">
-                    <div class="skill-icon">🎮</div>
-                    <h4>Game Development</h4>
-                    <ul>
-                        <li>Unreal Engine Integration</li>
-                        <li>Game Asset Pipeline</li>
-                        <li>PBR Texturing</li>
-                        <li>Scene Assembly</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-    </div>
-
-    <!-- Footer -->
-    <footer id="contact">
-        <div class="footer-content">
-            <div class="footer-brand">
-                <h3>Guanheng Wang</h3>
-                <p>Interactive Media Specialist based in Ireland. Creating digital experiences that bridge technology and creativity.</p>
-            </div>
-            <div class="footer-links">
-                <a href="mailto:wgh357004@gmail.com">Email</a>
-                <a href="https://linkedin.com/in/guanheng-wang-427320354" target="_blank">LinkedIn</a>
-                <a href="https://github.com/Dylan3570" target="_blank">GitHub</a>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 Guanheng Wang. Designed with precision and passion.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Scroll to top button -->
-    <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</button>
-
-    <!-- 3D Portfolio Lightbox -->
-    <div class="lightbox" id="lightbox">
-        <button class="lightbox-close" id="lbClose" aria-label="Close">✕</button>
-        <button class="lightbox-nav lightbox-prev" id="lbPrev" aria-label="Previous">‹</button>
-        <img src="" alt="Portfolio preview" id="lbImg">
-        <button class="lightbox-nav lightbox-next" id="lbNext" aria-label="Next">›</button>
-    </div>
+    <script src="libs/three.min.js"></script>
+    <script src="libs/GLTFLoader.js"></script>
+    <script src="libs/OrbitControls.js"></script>
+    <script src="libs/dat.gui.min.js"></script>
+    <script src="libs/stats.min.js"></script>
+    <script src="libs/VRButton.js"></script> 
+    <script src="libs/XRControllerModelFactory.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/cannon@0.6.2/build/cannon.min.js"></script>
 
     <script>
-        // Image preload and loading state handling
-        const avatarImg = document.getElementById('avatarImg');
-        const avatarImage = document.getElementById('avatarImage');
+        // Initialize scene, camera, and renderer
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        document.body.appendChild(renderer.domElement);
+        console.log("Renderer initialized");
 
-        avatarImg.addEventListener('load', () => {
-            avatarImg.classList.add('loaded');
-            avatarImage.classList.add('loaded');
-        });
+        // Enable WebXR in the renderer
+        renderer.xr.enabled = true;
 
-        if (avatarImg.complete) {
-            avatarImg.classList.add('loaded');
-            avatarImage.classList.add('loaded');
+        // Note: the built-in VRButton is not used; a custom ENTER VR button is
+        // added further below (addCustomVRButton), which avoids the persistent
+        // "VR NOT SUPPORTED" label on non-VR browsers.
+
+        // Add OrbitControls
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.screenSpacePanning = false;
+        controls.minDistance = 1;
+        controls.maxDistance = 100;
+        controls.maxPolarAngle = Math.PI;
+        console.log("OrbitControls initialized");
+
+        // Add performance monitor
+        const stats = new Stats();
+        stats.dom.style.position = 'relative';
+        stats.dom.style.top = '0';
+        stats.dom.style.left = '0';
+        document.getElementById('statsHost').appendChild(stats.dom);
+        console.log("Stats.js initialized");
+
+        // Set scene background to black
+        scene.background = new THREE.Color(0x000000);
+        console.log("Scene background set to black");
+
+        // Load textures
+        const textureLoader = new THREE.TextureLoader();
+        let floorTexture;
+        try {
+            floorTexture = textureLoader.load('assets/textures/wood_floor.jpg');
+            floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
+            floorTexture.repeat.set(1, 1);
+            floorTexture.offset.set(0, 0);
+            console.log("Floor texture loaded successfully");
+        } catch (error) {
+            console.error("Failed to load floor texture:", error);
+            floorTexture = null;
         }
 
-        // Music Player Functionality
-        const musicToggle = document.getElementById('musicToggle');
-        const backgroundMusic = document.getElementById('backgroundMusic');
-        const musicTooltip = document.getElementById('musicTooltip');
-        let isPlaying = false;
+        let wallTexture;
+        try {
+            wallTexture = textureLoader.load('assets/textures/wall.jpg');
+            wallTexture.wrapS = wallTexture.wrapT = THREE.RepeatWrapping;
+            wallTexture.repeat.set(4, 4);
+            wallTexture.offset.set(0, 0);
+            console.log("Wall texture loaded successfully");
+        } catch (error) {
+            console.error("Failed to load wall texture:", error);
+            wallTexture = null;
+        }
 
-        musicToggle.addEventListener('click', () => {
-            if (isPlaying) {
-                backgroundMusic.pause();
-                musicToggle.classList.remove('playing');
-                musicTooltip.textContent = 'Play background music';
-                isPlaying = false;
-            } else {
-                backgroundMusic.play();
-                musicToggle.classList.add('playing');
-                musicTooltip.textContent = 'Pause background music';
-                isPlaying = true;
+        let deskTexture;
+        try {
+            deskTexture = textureLoader.load('assets/textures/wood_desk.jpg');
+            deskTexture.wrapS = deskTexture.wrapT = THREE.RepeatWrapping;
+            deskTexture.repeat.set(1, 1);
+            deskTexture.offset.set(0, 0);
+            console.log("Desk texture loaded successfully");
+        } catch (error) {
+            console.error("Failed to load desk texture:", error);
+            deskTexture = null;
+        }
+
+        // Define classroom dimensions
+        const roomWidth = 20;
+        const roomDepth = 22;
+        const roomHeight = 8;
+
+        // Add classroom floor
+        const floorGeometry = new THREE.PlaneGeometry(roomWidth, roomDepth);
+        const floorMaterial = new THREE.MeshStandardMaterial(floorTexture ? { map: floorTexture } : { color: 0x3C2F2F });
+        const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+        floor.rotation.x = -Math.PI / 2;
+        floor.receiveShadow = true;
+        scene.add(floor);
+        console.log("Classroom floor added");
+
+        // Add walls
+        const wallMaterial = new THREE.MeshStandardMaterial(wallTexture ? { map: wallTexture, side: THREE.DoubleSide } : { color: 0xD3D3D3, side: THREE.DoubleSide });
+        wallMaterial.roughness = 0.9;
+        wallMaterial.metalness = 0;
+
+        // Back wall
+        const backWallGeometry = new THREE.BoxGeometry(roomWidth, roomHeight, 0.2);
+        const backWall = new THREE.Mesh(backWallGeometry, wallMaterial);
+        backWall.position.set(0, roomHeight / 2, -roomDepth / 2);
+        backWall.receiveShadow = true;
+        backWall.castShadow = false;
+        scene.add(backWall);
+        console.log("Back wall added");
+
+        // Right wall
+        const rightWallGeometry = new THREE.BoxGeometry(0.2, roomHeight, roomDepth);
+        const rightWall = new THREE.Mesh(rightWallGeometry, wallMaterial);
+        rightWall.position.set(roomWidth / 2, roomHeight / 2, 0);
+        rightWall.receiveShadow = true;
+        rightWall.castShadow = false;
+        scene.add(rightWall);
+        console.log("Right wall added");
+
+        // Front wall
+        const frontWall = new THREE.Mesh(backWallGeometry, wallMaterial);
+        frontWall.position.set(0, roomHeight / 2, roomDepth / 2);
+        frontWall.receiveShadow = true;
+        frontWall.castShadow = false;
+        scene.add(frontWall);
+        console.log("Front wall added");
+
+        // Left wall - Add floor-to-ceiling window
+        const windowGroup = new THREE.Group();
+
+        // Glass material
+        const glassMaterial = new THREE.MeshStandardMaterial({
+            color: 0xD1E8E2,
+            transparent: true,
+            opacity: 0.8,
+            metalness: 0.3,
+            roughness: 0.05,
+            emissive: 0x111111,
+            emissiveIntensity: 0.1,
+            depthWrite: false
+        });
+
+        // Metal frame material
+        const frameMaterial = new THREE.MeshStandardMaterial({
+            color: 0x2A2A2A,
+            metalness: 0.8,
+            roughness: 0.2
+        });
+
+        // Window dimensions
+        const windowHeight = roomHeight;
+        const windowWidth = roomDepth;
+        const windowPaneWidth = windowWidth / 5;
+        const glassThickness = 0.05;
+
+        // Add glass panes (5 panes)
+        for (let i = 0; i < 5; i++) {
+            const paneGeometry = new THREE.BoxGeometry(glassThickness, windowHeight, windowPaneWidth - 0.2);
+            const pane = new THREE.Mesh(paneGeometry, glassMaterial);
+            pane.position.set(0, roomHeight / 2, -windowWidth / 2 + i * windowPaneWidth + windowPaneWidth / 2);
+            pane.castShadow = false;
+            pane.receiveShadow = true;
+            windowGroup.add(pane);
+        }
+
+        // Uniform frame width
+        const frameWidth = 0.1;
+
+        // Add top and bottom frames
+        const topFrameGeometry = new THREE.BoxGeometry(frameWidth, frameWidth, windowWidth - 2 * frameWidth);
+        const topFrame = new THREE.Mesh(topFrameGeometry, frameMaterial);
+        topFrame.position.set(0, roomHeight - frameWidth, 0);
+        windowGroup.add(topFrame);
+
+        const bottomFrame = new THREE.Mesh(topFrameGeometry, frameMaterial);
+        bottomFrame.position.set(0, frameWidth, 0);
+        windowGroup.add(bottomFrame);
+
+        // Add 4 vertical frames
+        const verticalFrameGeometry = new THREE.BoxGeometry(frameWidth, windowHeight - 2 * frameWidth, frameWidth);
+        for (let i = 0; i < 4; i++) {
+            const verticalFrame = new THREE.Mesh(verticalFrameGeometry, frameMaterial);
+            verticalFrame.position.set(0, roomHeight / 2, -windowWidth / 2 + (i + 1) * windowPaneWidth);
+            windowGroup.add(verticalFrame);
+        }
+
+        // Add side frames
+        const sideFrameGeometry = new THREE.BoxGeometry(frameWidth, windowHeight - 2 * frameWidth, frameWidth);
+        const leftSideFrame = new THREE.Mesh(sideFrameGeometry, frameMaterial);
+        leftSideFrame.position.set(glassThickness / 2, roomHeight / 2, -windowWidth / 2 + frameWidth);
+        windowGroup.add(leftSideFrame);
+        const rightSideFrame = new THREE.Mesh(sideFrameGeometry, frameMaterial);
+        rightSideFrame.position.set(glassThickness / 2, roomHeight / 2, windowWidth / 2 - frameWidth);
+        windowGroup.add(rightSideFrame);
+
+        windowGroup.position.set(-roomWidth / 2 + frameWidth / 2, 0, 0);
+        scene.add(windowGroup);
+        console.log("Floor-to-ceiling window added on the left wall");
+
+        // Add ceiling
+        const ceilingGeometry = new THREE.PlaneGeometry(roomWidth, roomDepth);
+        const ceilingMaterial = new THREE.MeshStandardMaterial(wallTexture ? { map: wallTexture } : { color: 0xD3D3D3 });
+        const ceiling = new THREE.Mesh(ceilingGeometry, ceilingMaterial);
+        ceiling.rotation.x = Math.PI / 2;
+        ceiling.position.set(0, roomHeight, 0);
+        ceiling.receiveShadow = true;
+        scene.add(ceiling);
+        console.log("Ceiling added");
+
+        // Add blackboard
+        const blackboardGeometry = new THREE.PlaneGeometry(6, 3);
+        const blackboardMaterial = new THREE.MeshStandardMaterial({ color: 0x333333 });
+        const blackboard = new THREE.Mesh(blackboardGeometry, blackboardMaterial);
+        blackboard.position.set(0, 3.5, -roomDepth / 2 + 0.2);
+        blackboard.receiveShadow = true;
+        scene.add(blackboard);
+        console.log("Blackboard added");
+
+        // Add blackboard frame
+        const blackboardFrameMaterial = new THREE.MeshStandardMaterial({ color: 0xC0C0C0, metalness: 0.8, roughness: 0.2 });
+        const blackboardFrameGeometry = new THREE.BoxGeometry(6.2, 0.2, 0.2);
+        const topBlackboardFrame = new THREE.Mesh(blackboardFrameGeometry, blackboardFrameMaterial);
+        topBlackboardFrame.position.set(0, 5, -roomDepth / 2 + 0.2);
+        scene.add(topBlackboardFrame);
+        const bottomBlackboardFrame = new THREE.Mesh(blackboardFrameGeometry, blackboardFrameMaterial);
+        bottomBlackboardFrame.position.set(0, 2, -roomDepth / 2 + 0.2);
+        scene.add(bottomBlackboardFrame);
+        const sideBlackboardFrameGeometry = new THREE.BoxGeometry(0.2, 3.2, 0.2);
+        const leftBlackboardFrame = new THREE.Mesh(sideBlackboardFrameGeometry, blackboardFrameMaterial);
+        leftBlackboardFrame.position.set(-3.1, 3.5, -roomDepth / 2 + 0.2);
+        scene.add(leftBlackboardFrame);
+        const rightBlackboardFrame = new THREE.Mesh(sideBlackboardFrameGeometry, blackboardFrameMaterial);
+        rightBlackboardFrame.position.set(3.1, 3.5, -roomDepth / 2 + 0.2);
+        scene.add(rightBlackboardFrame);
+        console.log("Blackboard frame added");
+
+        // Add realistic door on right wall
+        const doorGroup = new THREE.Group();
+        const doorGeometry = new THREE.BoxGeometry(0.1, 4, 2);
+        const doorMaterial = new THREE.MeshStandardMaterial({ color: 0x8B4513 });
+        const door = new THREE.Mesh(doorGeometry, doorMaterial);
+        door.position.set(0, 2, 0);
+        door.castShadow = true;
+        door.receiveShadow = true;
+        doorGroup.add(door);
+
+        const doorFrameMaterial = new THREE.MeshStandardMaterial({ color: 0xC0C0C0, metalness: 0.8, roughness: 0.2 });
+        const doorFrameTopGeometry = new THREE.BoxGeometry(0.2, 0.2, 2.2);
+        const doorFrameTop = new THREE.Mesh(doorFrameTopGeometry, doorFrameMaterial);
+        doorFrameTop.position.set(0, 4.1, 0);
+        doorGroup.add(doorFrameTop);
+        const doorFrameSideGeometry = new THREE.BoxGeometry(0.2, 4.2, 0.2);
+        const doorFrameLeft = new THREE.Mesh(doorFrameSideGeometry, doorFrameMaterial);
+        doorFrameLeft.position.set(0, 2, -1.1);
+        doorGroup.add(doorFrameLeft);
+        const doorFrameRight = new THREE.Mesh(doorFrameSideGeometry, doorFrameMaterial);
+        doorFrameRight.position.set(0, 2, 1.1);
+        doorGroup.add(doorFrameRight);
+
+        const handleGeometry = new THREE.CylinderGeometry(0.05, 0.05, 0.3, 32);
+        const handleMaterial = new THREE.MeshStandardMaterial({ color: 0xFFD700, metalness: 0.9, roughness: 0.1 });
+        const handle = new THREE.Mesh(handleGeometry, handleMaterial);
+        handle.rotation.z = Math.PI / 2;
+        handle.position.set(0.06, 1.5, 0.8);
+        doorGroup.add(handle);
+
+        doorGroup.position.set(8, 0, -roomDepth / 2 + 0.1);
+        doorGroup.rotation.y = -Math.PI / 2;
+        scene.add(doorGroup);
+        console.log("Realistic door added");
+
+        // Add luxury desks and chairs (4 rows, 6 chairs per row)
+        const deskMaterial = new THREE.MeshStandardMaterial(deskTexture ? { map: deskTexture, roughness: 0.5, metalness: 0 } : { color: 0x4A2F27, roughness: 0.5, metalness: 0 });
+        const metalMaterial = new THREE.MeshStandardMaterial({ color: 0xA9A9A9, metalness: 0.9, roughness: 0.3 });
+        const cushionMaterial = new THREE.MeshStandardMaterial({ color: 0x2F4F4F, roughness: 0.7, metalness: 0 });
+        for (let row = 0; row < 4; row++) {
+            const baseZ = -2 + row * 3;
+
+            const deskGroup = new THREE.Group();
+            const deskWidth = 12;
+            const deskTopGeometry = new THREE.BoxGeometry(deskWidth, 0.1, 1);
+            const deskTop = new THREE.Mesh(deskTopGeometry, deskMaterial);
+            deskTop.position.set(0, 0.75, 0);
+            deskTop.castShadow = true;
+            deskTop.receiveShadow = true;
+            deskGroup.add(deskTop);
+            const legGeometry = new THREE.BoxGeometry(0.1, 0.7, 0.1);
+            const leg1 = new THREE.Mesh(legGeometry, metalMaterial);
+            leg1.position.set(-deskWidth / 2 + 0.2, 0.35, -0.4);
+            leg1.castShadow = true;
+            leg1.receiveShadow = true;
+            deskGroup.add(leg1);
+            const leg2 = new THREE.Mesh(legGeometry, metalMaterial);
+            leg2.position.set(-deskWidth / 2 + 0.2, 0.35, 0.4);
+            leg2.castShadow = true;
+            leg2.receiveShadow = true;
+            deskGroup.add(leg2);
+            const leg3 = new THREE.Mesh(legGeometry, metalMaterial);
+            leg3.position.set(0, 0.35, -0.4);
+            leg3.castShadow = true;
+            leg3.receiveShadow = true;
+            deskGroup.add(leg3);
+            const leg4 = new THREE.Mesh(legGeometry, metalMaterial);
+            leg4.position.set(0, 0.35, 0.4);
+            leg4.castShadow = true;
+            leg4.receiveShadow = true;
+            deskGroup.add(leg4);
+            const leg5 = new THREE.Mesh(legGeometry, metalMaterial);
+            leg5.position.set(deskWidth / 2 - 0.2, 0.35, -0.4);
+            leg5.castShadow = true;
+            leg5.receiveShadow = true;
+            deskGroup.add(leg5);
+            const leg6 = new THREE.Mesh(legGeometry, metalMaterial);
+            leg6.position.set(deskWidth / 2 - 0.2, 0.35, 0.4);
+            leg6.castShadow = true;
+            leg6.receiveShadow = true;
+            deskGroup.add(leg6);
+
+            const chairSpacing = deskWidth / 6;
+            for (let chairIdx = 0; chairIdx < 6; chairIdx++) {
+                const chairGroup = new THREE.Group();
+                const seatGeometry = new THREE.BoxGeometry(0.4, 0.1, 0.4);
+                const seat = new THREE.Mesh(seatGeometry, cushionMaterial);
+                seat.position.set(0, 0.45, 0);
+                seat.castShadow = true;
+                seat.receiveShadow = true;
+                chairGroup.add(seat);
+                const backrestGeometry = new THREE.BoxGeometry(0.4, 0.5, 0.05);
+                const backrest = new THREE.Mesh(backrestGeometry, cushionMaterial);
+                backrest.position.set(0, 0.65, 0.15);
+                backrest.castShadow = true;
+                backrest.receiveShadow = true;
+                chairGroup.add(backrest);
+                const chairLegGeometry = new THREE.BoxGeometry(0.05, 0.4, 0.05);
+                const chairLeg1 = new THREE.Mesh(chairLegGeometry, metalMaterial);
+                chairLeg1.position.set(-0.15, 0.2, -0.15);
+                chairLeg1.castShadow = true;
+                chairLeg1.receiveShadow = true;
+                chairGroup.add(chairLeg1);
+                const chairLeg2 = new THREE.Mesh(chairLegGeometry, metalMaterial);
+                chairLeg2.position.set(-0.15, 0.2, 0.15);
+                chairLeg2.castShadow = true;
+                chairLeg2.receiveShadow = true;
+                chairGroup.add(chairLeg2);
+                const chairLeg3 = new THREE.Mesh(chairLegGeometry, metalMaterial);
+                chairLeg3.position.set(0.15, 0.2, -0.15);
+                chairLeg3.castShadow = true;
+                chairLeg3.receiveShadow = true;
+                chairGroup.add(chairLeg3);
+                const chairLeg4 = new THREE.Mesh(chairLegGeometry, metalMaterial);
+                chairLeg4.position.set(0.15, 0.2, 0.15);
+                chairLeg4.castShadow = true;
+                chairLeg4.receiveShadow = true;
+                chairGroup.add(chairLeg4);
+                chairGroup.position.set(-deskWidth / 2 + chairSpacing / 2 + chairIdx * chairSpacing, 0, 1.5);
+                deskGroup.add(chairGroup);
             }
-        });
 
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
+            deskGroup.position.set(0, 0, baseZ);
+            scene.add(deskGroup);
+        }
+        console.log("Luxury long desks and chairs added");
 
-        // Navbar scroll effect
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
+        // Add modern podium
+        const podiumGroup = new THREE.Group();
+        const podiumFrameMaterial = new THREE.MeshStandardMaterial({ color: 0xA9A9A9, metalness: 0.9, roughness: 0.3 });
+        const podiumFrameGeometry = new THREE.BoxGeometry(2, 0.05, 1.5);
+        const podiumFrameBottom = new THREE.Mesh(podiumFrameGeometry, podiumFrameMaterial);
+        podiumFrameBottom.position.set(0, 0.025, 0);
+        podiumFrameBottom.castShadow = true;
+        podiumFrameBottom.receiveShadow = true;
+        podiumGroup.add(podiumFrameBottom);
+
+        const podiumFrameTop = new THREE.Mesh(podiumFrameGeometry, podiumFrameMaterial);
+        podiumFrameTop.position.set(0, 0.775, 0);
+        podiumFrameTop.castShadow = true;
+        podiumFrameTop.receiveShadow = true;
+        podiumGroup.add(podiumFrameTop);
+
+        const podiumLegGeometry = new THREE.BoxGeometry(0.05, 0.75, 0.05);
+        const podiumLeg1 = new THREE.Mesh(podiumLegGeometry, podiumFrameMaterial);
+        podiumLeg1.position.set(-0.95, 0.375, -0.7);
+        podiumLeg1.castShadow = true;
+        podiumLeg1.receiveShadow = true;
+        podiumGroup.add(podiumLeg1);
+        const podiumLeg2 = new THREE.Mesh(podiumLegGeometry, podiumFrameMaterial);
+        podiumLeg2.position.set(-0.95, 0.375, 0.7);
+        podiumLeg2.castShadow = true;
+        podiumLeg2.receiveShadow = true;
+        podiumGroup.add(podiumLeg2);
+        const podiumLeg3 = new THREE.Mesh(podiumLegGeometry, podiumFrameMaterial);
+        podiumLeg3.position.set(0.95, 0.375, -0.7);
+        podiumLeg3.castShadow = true;
+        podiumLeg3.receiveShadow = true;
+        podiumGroup.add(podiumLeg3);
+        const podiumLeg4 = new THREE.Mesh(podiumLegGeometry, podiumFrameMaterial);
+        podiumLeg4.position.set(0.95, 0.375, 0.7);
+        podiumLeg4.castShadow = true;
+        podiumLeg4.receiveShadow = true;
+        podiumGroup.add(podiumLeg4);
+
+        const podiumGlassMaterial = new THREE.MeshStandardMaterial({ 
+            color: 0xE0FFFF, 
+            transparent: true, 
+            opacity: 0.3, 
+            metalness: 0.9, 
+            roughness: 0.1 
+        });
+        const podiumSideGeometry = new THREE.BoxGeometry(0.05, 0.7, 1.5);
+        const podiumSide1 = new THREE.Mesh(podiumSideGeometry, podiumGlassMaterial);
+        podiumSide1.position.set(-0.975, 0.375, 0);
+        podiumSide1.castShadow = true;
+        podiumSide1.receiveShadow = true;
+        podiumGroup.add(podiumSide1);
+        const podiumSide2 = new THREE.Mesh(podiumSideGeometry, podiumGlassMaterial);
+        podiumSide2.position.set(0.975, 0.375, 0);
+        podiumSide2.castShadow = true;
+        podiumSide2.receiveShadow = true;
+        podiumGroup.add(podiumSide2);
+
+        const podiumTopGeometry = new THREE.BoxGeometry(2, 0.05, 1);
+        const podiumTop = new THREE.Mesh(podiumTopGeometry, podiumGlassMaterial);
+        podiumTop.position.set(0, 0.825, -0.25);
+        podiumTop.rotation.x = -Math.PI / 6;
+        podiumTop.castShadow = true;
+        podiumTop.receiveShadow = true;
+        podiumGroup.add(podiumTop);
+
+        podiumGroup.position.set(0, 0, -6);
+        scene.add(podiumGroup);
+        console.log("Modern podium added");
+
+        // Add three 3D objects with shaders in front of podium
+        const waveVertexShader = `
+            uniform float uTime;
+            varying vec2 vUv;
+            void main() {
+                vUv = uv;
+                vec3 pos = position;
+                pos.z += sin(pos.x * 5.0 + uTime) * 0.2;
+                pos.z += cos(pos.y * 5.0 + uTime) * 0.2;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
             }
-        });
-
-        // Scroll to top button
-        const scrollTopBtn = document.getElementById('scrollTop');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                scrollTopBtn.classList.add('visible');
-            } else {
-                scrollTopBtn.classList.remove('visible');
+        `;
+        const waveFragmentShader = `
+            varying vec2 vUv;
+            void main() {
+                vec3 color = mix(vec3(0.2, 0.5, 1.0), vec3(0.8, 0.9, 1.0), vUv.y);
+                gl_FragColor = vec4(color, 1.0);
             }
-        });
-
-        scrollTopBtn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        // Intersection Observer for sections
-        const sections = document.querySelectorAll('.section');
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
+        `;
+        const waveUniforms = {
+            uTime: { value: 0.0 }
         };
+        const waveMaterial = new THREE.ShaderMaterial({
+            uniforms: waveUniforms,
+            vertexShader: waveVertexShader,
+            fragmentShader: waveFragmentShader
+        });
+        const sphereGeometry = new THREE.SphereGeometry(0.3, 32, 32);
+        const sphere = new THREE.Mesh(sphereGeometry, waveMaterial);
+        sphere.position.set(-1.5, 1.0, -4);
+        sphere.castShadow = true;
+        sphere.receiveShadow = true;
+        scene.add(sphere);
+        console.log("Sphere with wave shader added");
 
-        const sectionObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
+        const blinkVertexShader = `
+            varying vec2 vUv;
+            void main() {
+                vUv = uv;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+        `;
+        const blinkFragmentShader = `
+            uniform float uTime;
+            varying vec2 vUv;
+            void main() {
+                float brightness = abs(sin(uTime));
+                vec3 color = vec3(1.0, 0.3, 0.3) * brightness;
+                gl_FragColor = vec4(color, 1.0);
+            }
+        `;
+        const blinkUniforms = {
+            uTime: { value: 0.0 }
+        };
+        const blinkMaterial = new THREE.ShaderMaterial({
+            uniforms: blinkUniforms,
+            vertexShader: blinkVertexShader,
+            fragmentShader: blinkFragmentShader
+        });
+        const boxGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+        const box = new THREE.Mesh(boxGeometry, blinkMaterial);
+        box.position.set(0, 1.0, -4);
+        box.castShadow = true;
+        box.receiveShadow = true;
+        scene.add(box);
+        console.log("Box with blink shader added");
+
+        const stripeVertexShader = `
+            varying vec2 vUv;
+            void main() {
+                vUv = uv;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+        `;
+        const stripeFragmentShader = `
+            varying vec2 vUv;
+            void main() {
+                float stripe = mod(vUv.x * 10.0, 1.0);
+                vec3 color = stripe < 0.5 ? vec3(0.0, 1.0, 0.0) : vec3(1.0, 1.0, 0.0);
+                gl_FragColor = vec4(color, 1.0);
+            }
+        `;
+        const stripeMaterial = new THREE.ShaderMaterial({
+            vertexShader: stripeVertexShader,
+            fragmentShader: stripeFragmentShader
+        });
+        const cylinderGeometry = new THREE.CylinderGeometry(0.25, 0.25, 0.5, 32);
+        const cylinder = new THREE.Mesh(cylinderGeometry, stripeMaterial);
+        cylinder.position.set(1.5, 1.0, -4);
+        cylinder.castShadow = true;
+        cylinder.receiveShadow = true;
+        scene.add(cylinder);
+        console.log("Cylinder with stripe shader added");
+
+        // Add ceiling lights
+        const ceilingLightGeometry = new THREE.BoxGeometry(4, 0.2, 0.5);
+        const ceilingLightMaterial = new THREE.MeshStandardMaterial({ 
+            color: 0xFFFFFF,
+            emissive: 0xFFFFFF, 
+            emissiveIntensity: 0.3
+        });
+        for (let row = 0; row < 3; row++) {
+            for (let col = 0; col < 3; col++) {
+                const ceilingLight = new THREE.Mesh(ceilingLightGeometry, ceilingLightMaterial);
+                ceilingLight.position.set(-6 + col * 6, roomHeight - 0.05, -6 + row * 6);
+                scene.add(ceilingLight);
+
+                const ceilingPointLight = new THREE.PointLight(0xFFFFFF, 0.4, 15, 2);
+                ceilingPointLight.position.set(-6 + col * 6, roomHeight - 0.1, -6 + row * 6);
+                scene.add(ceilingPointLight);
+            }
+        }
+        console.log("Ceiling lights with point lights added");
+
+        // Add lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+        scene.add(ambientLight);
+        console.log("Ambient light added, intensity:", ambientLight.intensity);
+
+        const directionalLight = new THREE.DirectionalLight(0xFAFAFA, 0.5);
+        directionalLight.position.set(-10, 10, 0);
+        directionalLight.castShadow = true;
+        directionalLight.shadow.mapSize.width = 2048;
+        directionalLight.shadow.mapSize.height = 2048;
+        directionalLight.shadow.camera.near = 0.5;
+        directionalLight.shadow.camera.far = 50;
+        directionalLight.shadow.camera.left = -20;
+        directionalLight.shadow.camera.right = 20;
+        directionalLight.shadow.camera.top = 20;
+        directionalLight.shadow.camera.bottom = -20;
+        directionalLight.shadow.bias = -0.0001;
+        scene.add(directionalLight);
+        console.log("Directional light added, position:", directionalLight.position);
+
+        const spotLight = new THREE.SpotLight(0xFAFAFA, 0.8);
+        spotLight.position.set(0, 5, -5);
+        spotLight.castShadow = false;
+        spotLight.angle = Math.PI / 6;
+        spotLight.penumbra = 0.7;
+        spotLight.decay = 2;
+        spotLight.distance = 20;
+        spotLight.shadow.mapSize.width = 2048;
+        spotLight.shadow.mapSize.height = 2048;
+        spotLight.target = blackboard;
+        scene.add(spotLight);
+        console.log("Spotlight added, angle:", spotLight.angle);
+
+        const pointLight1 = new THREE.PointLight(0xFFFFFF, 0.5, 15, 2);
+        pointLight1.position.set(-2, 2, -5);
+        scene.add(pointLight1);
+        const pointLight2 = new THREE.PointLight(0xFFFFFF, 0.5, 15, 2);
+        pointLight2.position.set(2, 2, -5);
+        scene.add(pointLight2);
+        console.log("Point lights added");
+
+        // Load two animated characters
+        const loader = new THREE.GLTFLoader();
+        let mixer1, mixer2;
+
+        function normalizeModelSize(model, targetHeight) {
+            const box = new THREE.Box3().setFromObject(model);
+            const size = new THREE.Vector3();
+            box.getSize(size);
+            const maxDimension = Math.max(size.x, size.y, size.z);
+            const scale = targetHeight / maxDimension;
+            model.scale.set(scale, scale, scale);
+        }
+
+        loader.load('assets/models/character1.glb', (gltf) => {
+            const character1 = gltf.scene;
+            character1.position.set(-2, 0, -6);
+            normalizeModelSize(character1, 1.8);
+            character1.castShadow = true;
+            character1.traverse((child) => {
+                if (child.isMesh) {
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                    if (child.material) {
+                        child.material.metalness = 0;
+                        child.material.roughness = 0.5;
+                    }
                 }
             });
-        }, observerOptions);
-
-        sections.forEach(section => {
-            sectionObserver.observe(section);
+            scene.add(character1);
+            mixer1 = new THREE.AnimationMixer(character1);
+            if (gltf.animations && gltf.animations.length > 0) {
+                const action = mixer1.clipAction(gltf.animations[0]);
+                action.play();
+                console.log("Character 1 animation playing");
+            } else {
+                console.warn("Character 1 has no animations");
+            }
+            console.log("Character 1 loaded:", character1);
+        }, (progress) => {
+            console.log("Character 1 loading progress:", progress.loaded / progress.total * 100 + "%");
+        }, (error) => {
+            console.error("Failed to load Character 1:", error);
         });
 
-        // WebXR demo frame - full screen control
-        (function () {
-            const frame = document.getElementById('webxrFrame');
-            const expandBtn = document.getElementById('webxrExpand');
-            if (!frame || !expandBtn) return;
-
-            expandBtn.addEventListener('click', () => {
-                if (document.fullscreenElement || document.webkitFullscreenElement) {
-                    if (document.exitFullscreen) document.exitFullscreen();
-                    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
-                } else if (frame.requestFullscreen) {
-                    frame.requestFullscreen();
-                } else if (frame.webkitRequestFullscreen) {
-                    frame.webkitRequestFullscreen();
-                } else {
-                    window.open('https://dylan3570.github.io/webxr-demo', '_blank');
+        loader.load('assets/models/character2.glb', (gltf) => {
+            const character2 = gltf.scene;
+            character2.position.set(2, 0, -6);
+            normalizeModelSize(character2, 1.8);
+            character2.castShadow = true;
+            character2.traverse((child) => {
+                if (child.isMesh) {
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                    if (child.material) {
+                        child.material.metalness = 0;
+                        child.material.roughness = 0.5;
+                    }
                 }
             });
-        })();
-
-        // 3D Portfolio Lightbox
-        (function () {
-            const items = Array.from(document.querySelectorAll('.gallery-item'));
-            const lightbox = document.getElementById('lightbox');
-            const lbImg = document.getElementById('lbImg');
-            const lbClose = document.getElementById('lbClose');
-            const lbPrev = document.getElementById('lbPrev');
-            const lbNext = document.getElementById('lbNext');
-            if (!items.length || !lightbox) return;
-
-            const sources = items.map(it => it.querySelector('img').getAttribute('src'));
-            let current = 0;
-
-            function show(i) {
-                current = (i + sources.length) % sources.length;
-                lbImg.setAttribute('src', sources[current]);
+            scene.add(character2);
+            mixer2 = new THREE.AnimationMixer(character2);
+            if (gltf.animations && gltf.animations.length > 0) {
+                const action = mixer2.clipAction(gltf.animations[0]);
+                action.play();
+                console.log("Character 2 animation playing");
+            } else {
+                console.warn("Character 2 has no animations");
             }
-            function open(i) {
-                show(i);
-                lightbox.classList.add('open');
-                document.body.style.overflow = 'hidden';
-            }
-            function close() {
-                lightbox.classList.remove('open');
-                document.body.style.overflow = '';
-            }
+            console.log("Character 2 loaded:", character2);
+        }, (progress) => {
+            console.log("Character 2 loading progress:", progress.loaded / progress.total * 100 + "%");
+        }, (error) => {
+            console.error("Failed to load Character 2:", error);
+        });
 
-            items.forEach((it, i) => it.addEventListener('click', () => open(i)));
-            lbClose.addEventListener('click', close);
-            lbPrev.addEventListener('click', () => show(current - 1));
-            lbNext.addEventListener('click', () => show(current + 1));
-            lightbox.addEventListener('click', (e) => { if (e.target === lightbox) close(); });
-            document.addEventListener('keydown', (e) => {
-                if (!lightbox.classList.contains('open')) return;
-                if (e.key === 'Escape') close();
-                if (e.key === 'ArrowLeft') show(current - 1);
-                if (e.key === 'ArrowRight') show(current + 1);
+        // Add video screen on blackboard
+        const video = document.createElement('video');
+        video.src = 'assets/videos/lesson.mp4';
+        video.loop = true;
+        video.muted = true;
+        video.load();
+        video.addEventListener('loadeddata', () => {
+            video.play().then(() => {
+                console.log("Video playing successfully");
+            }).catch((error) => {
+                console.error("Failed to play video:", error);
+                const placeholderGeometry = new THREE.PlaneGeometry(6, 3);
+                const placeholderMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
+                const placeholder = new THREE.Mesh(placeholderGeometry, placeholderMaterial);
+                placeholder.position.set(0, 3.5, -roomDepth / 2 + 0.4);
+                scene.add(placeholder);
+                console.log("Video failed to load, added placeholder plane");
             });
-        })();
+        }, (error) => {
+            console.error("Failed to load video:", error);
+        });
+        const videoTexture = new THREE.VideoTexture(video);
+        const screenGeometry = new THREE.PlaneGeometry(6, 3);
+        const screenMaterial = new THREE.MeshBasicMaterial({ map: videoTexture });
+        const screen = new THREE.Mesh(screenGeometry, screenMaterial);
+        screen.position.set(0, 3.5, -roomDepth / 2 + 0.4);
+        scene.add(screen);
+        console.log("Video screen added, position:", screen.position);
+
+        // Add spatial audio
+        const listener = new THREE.AudioListener();
+        camera.add(listener);
+        const sound = new THREE.PositionalAudio(listener);
+        const audioLoader = new THREE.AudioLoader();
+        audioLoader.load('assets/audio/background.wav', (buffer) => {
+            sound.setBuffer(buffer);
+            sound.setRefDistance(20);
+            sound.setLoop(true);
+            sound.setVolume(0.5);
+            console.log("Spatial audio loaded successfully");
+        }, (progress) => {
+            console.log("Audio loading progress:", progress.loaded / progress.total * 100 + "%");
+        }, (error) => {
+            console.error("Failed to load audio:", error);
+        });
+        screen.add(sound);
+        console.log("Spatial audio attached to screen");
+
+        // Bind audio playback to user interaction (toggle)
+        const playButton = document.getElementById('playButton');
+        playButton.addEventListener('click', () => {
+            if (sound.isPlaying) {
+                sound.pause();
+                playButton.textContent = 'Play Audio';
+                console.log("User clicked, audio paused");
+            } else {
+                sound.play();
+                playButton.textContent = 'Pause Audio';
+                console.log("User clicked, audio started playing");
+            }
+        });
+
+        // Add reset view button
+        const resetButton = document.getElementById('resetButton');
+        resetButton.addEventListener('click', () => {
+            camera.position.set(0, 10, 10);
+            controls.target.set(0, 2, 0);
+            controls.update();
+            console.log("View reset");
+        });
+
+        // Add dat.GUI controls (mounted inside the settings panel)
+        const gui = new dat.GUI({ autoPlace: false, width: 240 });
+        document.getElementById('guiHost').appendChild(gui.domElement);
+        const guiControls = {
+            lightIntensity: 0.5,
+            volume: 0.5
+        };
+        gui.add(guiControls, 'lightIntensity', 0, 1).name("Light Intensity").onChange((value) => {
+            directionalLight.intensity = value;
+            console.log("Light intensity adjusted to:", value);
+        });
+        gui.add(guiControls, 'volume', 0, 1).name("Audio Volume").onChange((value) => {
+            sound.setVolume(value);
+            console.log("Volume adjusted to:", value);
+        });
+        console.log("dat.GUI controls added");
+
+        // Settings panel toggle
+        const settingsToggle = document.getElementById('settingsToggle');
+        const settingsPanel = document.getElementById('settingsPanel');
+        settingsToggle.addEventListener('click', () => {
+            const isOpen = settingsPanel.classList.toggle('open');
+            settingsToggle.classList.toggle('open', isOpen);
+        });
+
+        // Set camera position
+        camera.position.set(0, 10, 10);
+        controls.target.set(0, 2, 0);
+        console.log("Camera position set:", camera.position);
+
+        // Animation loop
+        const clock = new THREE.Clock();
+        function animate() {
+            const delta = clock.getDelta();
+
+            // Update animations
+            if (mixer1) mixer1.update(delta);
+            if (mixer2) mixer2.update(delta);
+
+            // Update shader time
+            waveUniforms.uTime.value += delta;
+            blinkUniforms.uTime.value += delta;
+
+            // Update controls
+            controls.update();
+
+            // Render the scene
+            renderer.render(scene, camera);
+
+            // Update stats
+            stats.update();
+        }
+
+        // Use setAnimationLoop for VR compatibility
+        renderer.setAnimationLoop(animate);
+
+        console.log("VR functionality enabled");
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            console.log("Window resized, new dimensions:", window.innerWidth, window.innerHeight);
+        });
+
+        // Add custom VR button
+        function addCustomVRButton() {
+            const button = document.createElement('button');
+            button.style.position = 'absolute';
+            button.style.bottom = '20px';
+            button.style.padding = '12px 24px';
+            button.style.border = '1px solid #fff';
+            button.style.borderRadius = '4px';
+            button.style.background = 'rgba(0,0,0,0.6)';
+            button.style.color = '#fff';
+            button.style.font = 'normal 13px sans-serif';
+            button.style.textAlign = 'center';
+            button.style.left = 'calc(50% - 50px)';
+            button.style.width = '100px';
+            button.style.cursor = 'pointer';
+            button.textContent = 'ENTER VR';
+            
+            button.onclick = function() {
+                if (navigator.xr) {
+                    console.log("Attempting to enter VR mode");
+                    navigator.xr.isSessionSupported('immersive-vr').then(supported => {
+                        if (supported) {
+                            console.log("VR session supported, requesting...");
+                            navigator.xr.requestSession('immersive-vr', { 
+                                optionalFeatures: ['local-floor', 'bounded-floor'] 
+                            }).then(session => {
+                                console.log("VR session started");
+                                renderer.xr.setSession(session);
+                            }).catch(err => {
+                                console.error("VR session request failed:", err);
+                            });
+                        } else {
+                            console.log("Browser doesn't support VR sessions");
+                            alert("Your browser doesn't support VR sessions");
+                        }
+                    });
+                } else {
+                    console.log("WebXR not available");
+                    alert("Your browser doesn't support WebXR");
+                }
+            };
+            
+            document.body.appendChild(button);
+        }
+
+        // Call this function to add custom VR button
+        addCustomVRButton();
+
+        // Physics engine initialization functionngine initialization function
+        function initPhysics() {
+            // Initialize physics worldize the physics world
+            const world = new CANNON.World();
+            world.gravity.set(0, -9.82, 0);
+            world.broadphase = new CANNON.NaiveBroadphase();
+            world.solver.iterations = 10;
+            
+            // Ground physics bodyd physics body
+            const groundShape = new CANNON.Plane();
+            const groundBody = new CANNON.Body({ mass: 0 });
+            groundBody.addShape(groundShape);
+            groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI/2);
+            world.addBody(groundBody);
+            
+            // Create interactive physics objectsteractive physics objects
+            const physicsObjects = [];
+            const objectColors = [0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff];
+            
+            // Create physics objects in the middle of the first row of desks and chairscts in the middle of the first row of desks and chairs
+            for (let i = 0; i < 5; i++) {
+                const size = 0.3; // Increase size to make the balls more noticeableze to make the balls more noticeable
+                // Adjust position: in front of the first row of seats, evenly distributed front of the first row of seats, evenly distributed
+                const position = new THREE.Vector3(-4 + i * 2, 1.2, -0.5);
+                
+                // Create Three.js visual object visual object
+                const geometry = [
+                    new THREE.BoxGeometry(size, size, size),
+                    new THREE.SphereGeometry(size/2, 16, 16),
+                    new THREE.CylinderGeometry(size/2, size/2, size, 16)
+                ][i % 3];
+                
+                const material = new THREE.MeshStandardMaterial({ 
+                    color: objectColors[i],
+                    metalness: 0.3,
+                    roughness: 0.4,
+                    emissive: objectColors[i],
+                    emissiveIntensity: 0.1
+                });
+                
+                const mesh = new THREE.Mesh(geometry, material);
+                mesh.castShadow = true;
+                mesh.receiveShadow = true;
+                mesh.position.copy(position);
+                scene.add(mesh);
+                
+                // Create corresponding physics bodyorresponding physics body
+                let shape;
+                if (geometry.type === "BoxGeometry") {
+                    shape = new CANNON.Box(new CANNON.Vec3(size/2, size/2, size/2));
+                } else if (geometry.type === "SphereGeometry") {
+                    shape = new CANNON.Sphere(size/2);
+                } else {
+                    shape = new CANNON.Cylinder(size/2, size/2, size, 8);
+                }
+                
+                const body = new CANNON.Body({ 
+                    mass: 1,
+                    shape: shape,
+                    position: new CANNON.Vec3(position.x, position.y, position.z),
+                    linearDamping: 0.3,
+                    angularDamping: 0.3
+                });
+                
+                world.addBody(body);
+                physicsObjects.push({
+                    mesh: mesh,
+                    body: body,
+                    grabbed: false
+                });
+            }
+            
+            return { world, physicsObjects };
+        }
+
+        // Create controller objectscontroller objects
+        const controller1 = renderer.xr.getController(0);
+        scene.add(controller1);
+        const controller2 = renderer.xr.getController(1);
+        scene.add(controller2);
+
+        // Initialize physics world and objects - now that the function is defined, it can be called correctly and objects - now that the function is defined, it can be called correctly
+        const physics = initPhysics();
+        const world = physics.world;
+        const physicsObjects = physics.physicsObjects;
+
+        // WebXR controller interaction systemller interaction system
+        function setupVRControllers() {
+            // For controller raycastingoller raycasting
+            const raycaster = new THREE.Raycaster();
+            const tempMatrix = new THREE.Matrix4();
+            
+            // Enhanced controller ray visualizationontroller ray visualization
+            function createControllerRay() {
+                const group = new THREE.Group();
+                
+                // Main rayn ray
+                const rayGeometry = new THREE.BufferGeometry().setFromPoints([
+                    new THREE.Vector3(0, 0, 0),
+                    new THREE.Vector3(0, 0, -5)
+                ]);
+                const rayMaterial = new THREE.LineBasicMaterial({
+                    color: 0x00ffff,
+                    transparent: true,
+                    opacity: 0.7
+                });
+                const ray = new THREE.Line(rayGeometry, rayMaterial);
+                group.add(ray);
+                
+                // Ray endpoint indicatorpoint indicator
+                const rayEndGeometry = new THREE.SphereGeometry(0.02, 8, 8);
+                const rayEndMaterial = new THREE.MeshBasicMaterial({
+                    color: 0xffffff
+                });
+                const rayEnd = new THREE.Mesh(rayEndGeometry, rayEndMaterial);
+                rayEnd.position.z = -5;
+                group.add(rayEnd);
+                
+                return group;
+            }
+            
+            // Add advanced rays to controllersed rays to controllers
+            controller1.add(createControllerRay());
+            controller2.add(createControllerRay());
+            
+            // Handle controller interaction with physics objectsller interaction with physics objects
+            function onSelectStart(event) {
+                const controller = event.target;
+                
+                tempMatrix.identity().extractRotation(controller.matrixWorld);
+                raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
+                raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
+                
+                // Raycast intersection with physics objectstion detection with physics objects
+                const intersects = raycaster.intersectObjects(
+                    physicsObjects.map(obj => obj.mesh)
+                );
+                
+                if (intersects.length > 0) {
+                    const object = intersects[0].object;
+                    const physicsObj = physicsObjects.find(obj => obj.mesh === object);
+                    
+                    if (physicsObj) {
+                        physicsObj.grabbed = controller;
+                        physicsObj.body.mass = 0; // Make the object unaffected by gravityct unaffected by gravity
+                        physicsObj.body.updateMassProperties();
+                        
+                        // Haptic feedbackic feedback
+                        if (controller.gamepad && controller.gamepad.hapticActuators) {
+                            controller.gamepad.hapticActuators[0].pulse(0.7, 100);
+                        }
+                        
+                        // Set highlight effectghlight effect
+                        object.material.emissiveIntensity = 0.5;
+                    }
+                }
+            }
+            
+            function onSelectEnd(event) {
+                const controller = event.target;
+                
+                // Release grabbed objectgrabbed object
+                physicsObjects.forEach(physicsObj => {
+                    if (physicsObj.grabbed === controller) {
+                        physicsObj.grabbed = null;
+                        physicsObj.body.mass = 1; // Restore normal gravitye normal gravity
+                        physicsObj.body.updateMassProperties();
+                        
+                        // Apply controller velocityntroller velocity
+                        if (controller.userData.velocity) {
+                            const velocity = controller.userData.velocity;
+                            physicsObj.body.velocity.set(
+                                velocity.x * 3,
+                                velocity.y * 3,
+                                velocity.z * 3
+                            );
+                        }
+                        
+                        // Restore original appearancee original appearance
+                        physicsObj.mesh.material.emissiveIntensity = 0.1;
+                    }
+                });
+            }
+            
+            // Bind controller eventsntroller events
+            controller1.addEventListener('selectstart', onSelectStart);
+            controller1.addEventListener('selectend', onSelectEnd);
+            controller2.addEventListener('selectstart', onSelectStart);
+            controller2.addEventListener('selectend', onSelectEnd);
+            
+            // Track controller velocityontroller velocity
+            controller1.userData.prevPosition = new THREE.Vector3();
+            controller1.userData.velocity = new THREE.Vector3();
+            controller2.userData.prevPosition = new THREE.Vector3();
+            controller2.userData.velocity = new THREE.Vector3();
+            
+            // Update controller state functionntroller state function
+            function updateControllers(delta) {
+                // Update controller velocitycontroller velocity
+                if (controller1.visible) {
+                    const position = new THREE.Vector3().setFromMatrixPosition(controller1.matrixWorld);
+                    controller1.userData.velocity.subVectors(position, controller1.userData.prevPosition).divideScalar(delta);
+                    controller1.userData.prevPosition.copy(position);
+                }
+                
+                if (controller2.visible) {
+                    const position = new THREE.Vector3().setFromMatrixPosition(controller2.matrixWorld);
+                    controller2.userData.velocity.subVectors(position, controller2.userData.prevPosition).divideScalar(delta);
+                    controller2.userData.prevPosition.copy(position);
+                }
+                
+                // Update position of grabbed objectsition of grabbed objects
+                physicsObjects.forEach(physicsObj => {
+                    if (physicsObj.grabbed) {
+                        // Get controller positiontroller position
+                        const controllerPos = new THREE.Vector3().setFromMatrixPosition(physicsObj.grabbed.matrixWorld);
+                        const offset = new THREE.Vector3(0, 0, -0.1); // Slight offsetht offset
+                        
+                        // Apply offset to controller matrixt to controller matrix
+                        tempMatrix.identity().extractRotation(physicsObj.grabbed.matrixWorld);
+                        offset.applyMatrix4(tempMatrix);
+                        
+                        // Calculate final positionate final position
+                        const targetPosition = controllerPos.add(offset);
+                        
+                        // Update mesh and physics bodyesh and physics body
+                        physicsObj.mesh.position.copy(targetPosition);
+                        physicsObj.mesh.quaternion.copy(physicsObj.grabbed.quaternion);
+                        physicsObj.body.position.copy(targetPosition);
+                        physicsObj.body.quaternion.copy(physicsObj.grabbed.quaternion);
+                    }
+                });
+            }
+            
+            return { updateControllers };
+        }
+        
+        const vrControllers = setupVRControllers();
+
+        // Create controller models - use try-catch to handle potential errorsse try-catch to handle potential errors
+        try {
+            const controllerModelFactory = new THREE.XRControllerModelFactory();
+            
+            const controllerGrip1 = renderer.xr.getControllerGrip(0);
+            if (controllerModelFactory.createControllerModel) {
+                controllerGrip1.add(controllerModelFactory.createControllerModel(controllerGrip1));
+            }
+            scene.add(controllerGrip1);
+
+            const controllerGrip2 = renderer.xr.getControllerGrip(1);
+            if (controllerModelFactory.createControllerModel) {
+                controllerGrip2.add(controllerModelFactory.createControllerModel(controllerGrip2));
+            }
+            scene.add(controllerGrip2);
+
+            console.log("VR controller models loaded successfully");
+        } catch (error) {
+            console.error("Error loading VR controller models:", error);
+            // Add simple controller models as fallbacktroller models as fallback
+            const controllerGeometry = new THREE.CylinderGeometry(0.025, 0.05, 0.1, 16);
+            const controllerMaterial = new THREE.MeshStandardMaterial({
+                color: 0x444444,
+                roughness: 0.3,
+                metalness: 0.8
+            });
+            
+            const controllerGrip1 = renderer.xr.getControllerGrip(0);
+            const controllerMesh1 = new THREE.Mesh(controllerGeometry, controllerMaterial);
+            controllerGrip1.add(controllerMesh1);
+            scene.add(controllerGrip1);
+            
+            const controllerGrip2 = renderer.xr.getControllerGrip(1);
+            const controllerMesh2 = new THREE.Mesh(controllerGeometry, controllerMaterial);
+            controllerGrip2.add(controllerMesh2);
+            scene.add(controllerGrip2);
+
+            console.log("Fallback controller models created");
+        }
+
+        // Add ray indicators indicators
+        const geometry = new THREE.BufferGeometry().setFromPoints([
+            new THREE.Vector3(0, 0, 0),
+            new THREE.Vector3(0, 0, -1)
+        ]);
+        const line = new THREE.Line(geometry);
+        line.scale.z = 5;
+        controller1.add(line.clone());
+        controller2.add(line.clone());
+
+        // Modify animation loop functionnimation loop function
+        function animate() {
+            const delta = clock.getDelta();
+            
+            // Update character animations character animations
+            if (mixer1) mixer1.update(delta);
+            if (mixer2) mixer2.update(delta);
+            
+            // Update physics world - ensure world is definedd - ensure world is defined
+            if (world) {
+                world.step(1/60, delta, 3);
+                
+                // Update visual position of physics objectsal position of physics objects
+                if (physicsObjects) {
+                    physicsObjects.forEach(obj => {
+                        if (!obj.grabbed) {
+                            obj.mesh.position.copy(obj.body.position);
+                            obj.mesh.quaternion.copy(obj.body.quaternion);
+                        }
+                    });
+                }
+            }
+            
+            // Update VR controllersVR controllers
+            if (renderer.xr.isPresenting && vrControllers && vrControllers.updateControllers) {
+                vrControllers.updateControllers(delta);
+            }
+            
+            // Update shader timeshader time
+            waveUniforms.uTime.value += delta;
+            blinkUniforms.uTime.value += delta;
+            
+            // Update camera controlscamera controls
+            controls.update();
+            
+            // Render sceneer scene
+            renderer.render(scene, camera);
+            
+            // Update performance stats performance stats
+            stats.update();
+        }
+
+        // Use setAnimationLoop instead of requestAnimationFrame to support VRonFrame to support VR
+        renderer.setAnimationLoop(animate);
     </script>
 </body>
 </html>
