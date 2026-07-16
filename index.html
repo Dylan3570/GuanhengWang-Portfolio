@@ -711,28 +711,6 @@
             display: none;
         }
 
-        .frame-hint {
-            position: absolute;
-            bottom: 18px;
-            right: 18px;
-            z-index: 4;
-            padding: 8px 16px;
-            border-radius: 50px;
-            background: rgba(44, 62, 80, 0.55);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            color: white;
-            font-size: 0.8rem;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-            pointer-events: none;
-            transition: opacity 0.4s;
-        }
-
-        .project-video.interactive:hover .frame-hint {
-            opacity: 0;
-        }
-
         .frame-expand {
             position: absolute;
             top: 18px;
@@ -1292,12 +1270,6 @@
                 aspect-ratio: 4 / 3;
             }
 
-            .frame-hint {
-                font-size: 0.72rem;
-                bottom: 12px;
-                right: 12px;
-            }
-
             .section-title {
                 font-size: 2.2rem;
             }
@@ -1515,12 +1487,11 @@
                             allow="xr-spatial-tracking; fullscreen; accelerometer; gyroscope; magnetometer"
                             allowfullscreen
                             loading="lazy"></iframe>
-                        <div class="frame-hint">Click and drag inside to interact</div>
                     </div>
                     <div class="project-content">
                         <div class="project-number">Project 03</div>
                         <h3 class="project-title">WebXR Interactive Demo</h3>
-                        <p class="project-description">A browser-based interactive 3D scene built with Three.js and WebXR, running live in the frame above &mdash; no plugin or download required. The demo explores real-time rendering and spatial interaction directly in the browser, and supports immersive viewing on WebXR-capable headsets. Drag inside the frame to orbit the scene, or open it full screen for the complete experience.</p>
+                        <p class="project-description">A browser-based interactive 3D scene built with Three.js and WebXR, running live in the frame above &mdash; no plugin or download required. The demo explores real-time rendering and spatial interaction directly in the browser, and supports immersive viewing on WebXR-capable headsets. Interact with the scene directly in the frame, or open it in full screen for the complete immersive experience.</p>
 
                         <div class="tech-stack">
                             <span class="tech-tag">Three.js</span>
