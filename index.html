@@ -711,42 +711,6 @@
             display: none;
         }
 
-        .live-badge {
-            position: absolute;
-            top: 18px;
-            left: 18px;
-            z-index: 4;
-            display: inline-flex;
-            align-items: center;
-            gap: 9px;
-            padding: 8px 16px;
-            border-radius: 50px;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            box-shadow: 0 4px 18px rgba(91, 168, 224, 0.25);
-            font-size: 0.75rem;
-            font-weight: 800;
-            letter-spacing: 1.2px;
-            text-transform: uppercase;
-            color: var(--accent-blue);
-            pointer-events: none;
-        }
-
-        .live-badge .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #2ecc71;
-            animation: livePulse 2s infinite;
-        }
-
-        @keyframes livePulse {
-            0%   { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); }
-            70%  { box-shadow: 0 0 0 10px rgba(46, 204, 113, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
-        }
-
         .frame-hint {
             position: absolute;
             bottom: 18px;
@@ -1544,7 +1508,6 @@
                 <!-- WebXR Interactive Demo -->
                 <div class="project-card">
                     <div class="project-video interactive" id="webxrFrame">
-                        <div class="live-badge"><span class="dot"></span> Live Demo</div>
                         <button class="frame-expand" id="webxrExpand" aria-label="Open demo in full screen" title="Full screen">&#9974;</button>
                         <iframe
                             src="https://dylan3570.github.io/webxr-demo"
@@ -1563,7 +1526,6 @@
                             <span class="tech-tag">Three.js</span>
                             <span class="tech-tag">WebXR</span>
                             <span class="tech-tag">JavaScript</span>
-                            <span class="tech-tag">Real-time Rendering</span>
                             <span class="tech-tag">Spatial Interaction</span>
                         </div>
 
