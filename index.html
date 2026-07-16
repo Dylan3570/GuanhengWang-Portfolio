@@ -327,13 +327,63 @@
 
         /* Enhanced Hero Section */
         .hero {
-            min-height: 100vh;
+            min-height: 85vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 120px 50px 80px;
             position: relative;
             z-index: 1;
+        }
+
+        /* Scroll cue */
+        .scroll-cue {
+            position: absolute;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px 12px;
+            color: var(--text-light);
+            font-family: inherit;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            opacity: 0.75;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: cueBob 2.2s ease-in-out infinite;
+            z-index: 2;
+        }
+
+        .scroll-cue:hover {
+            opacity: 1;
+            color: var(--sky-blue);
+        }
+
+        .scroll-cue svg {
+            width: 22px;
+            height: 22px;
+            stroke: currentColor;
+            stroke-width: 2.5;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        @keyframes cueBob {
+            0%, 100% { transform: translate(-50%, 0); }
+            50%      { transform: translate(-50%, 7px); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .scroll-cue { animation: none; }
         }
 
         .hero-container {
@@ -1235,6 +1285,12 @@
 
             .hero {
                 padding-top: 140px;
+                padding-bottom: 100px;
+            }
+
+            .scroll-cue {
+                bottom: 18px;
+                font-size: 0.72rem;
             }
 
             .avatar-container {
@@ -1396,6 +1452,10 @@
                 </div>
             </div>
         </div>
+        <button class="scroll-cue" id="scrollCue" aria-label="Scroll to projects">
+            <span>Projects</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
     </section>
 
     <!-- Main Content -->
@@ -1690,6 +1750,19 @@
                 }
             });
         });
+
+        // Scroll cue -> jump to projects, fade out once scrolling starts
+        const scrollCue = document.getElementById('scrollCue');
+        if (scrollCue) {
+            scrollCue.addEventListener('click', () => {
+                const target = document.getElementById('projects');
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+            window.addEventListener('scroll', () => {
+                scrollCue.style.opacity = window.scrollY > 120 ? '0' : '';
+                scrollCue.style.pointerEvents = window.scrollY > 120 ? 'none' : '';
+            });
+        }
 
         // Navbar scroll effect
         const navbar = document.getElementById('navbar');
